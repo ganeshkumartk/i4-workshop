@@ -51,14 +51,14 @@ export default function MythBusterPresenter({ config, participantCount, response
   const factPct = total > 0 ? (votes.FACT / total) * 100 : 50;
 
   return (
-    <div className="flex flex-col h-full px-12 py-8 relative overflow-hidden">
+    <div className="flex flex-col h-full px-12 py-8 relative overflow-hidden font-mono">
       {/* Confetti */}
       {showConfetti && (
         <div className="absolute inset-0 pointer-events-none z-50 overflow-hidden">
           {Array.from({ length: 40 }).map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-3 h-3 rounded-sm"
+              className="absolute w-4 h-4 border-2 border-black dark:border-white"
               style={{
                 left: `${Math.random() * 100}%`,
                 background: ['#BEF264', '#16A34A', '#EF4444', '#F59E0B', '#3B82F6'][i % 5],
@@ -67,12 +67,11 @@ export default function MythBusterPresenter({ config, participantCount, response
               animate={{
                 y: ['0vh', '110vh'],
                 rotate: [0, Math.random() * 720 - 360],
-                opacity: [1, 1, 0],
               }}
               transition={{
                 duration: 3 + Math.random() * 2,
                 delay: Math.random() * 1.5,
-                ease: 'easeIn',
+                ease: 'linear',
               }}
             />
           ))}
@@ -84,68 +83,68 @@ export default function MythBusterPresenter({ config, participantCount, response
         key={myth?.id}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-8"
+        className="text-center mb-12 border-8 border-black dark:border-white p-8 bg-[#BEF264] dark:bg-[#0000FF] shadow-[12px_12px_0px_rgba(255,0,0,1)]"
       >
-        <p className="opacity-40 text-sm uppercase tracking-widest mb-3">
-          Round {(config?.mythIndex ?? 0) + 1} of 4
+        <p className="text-black dark:text-white text-sm font-bold tracking-widest mb-4">
+          ROUND {(config?.mythIndex ?? 0) + 1} / 4
         </p>
-        <h2 className="text-4xl font-bold leading-tight max-w-2xl mx-auto">
+        <h2 className="text-4xl md:text-5xl font-black leading-none text-black dark:text-white uppercase tracking-tighter">
           {myth?.statement}
         </h2>
       </motion.div>
 
       {/* Live vote split */}
-      <div className="flex-1 flex flex-col items-center justify-center gap-8">
-        <div className="w-full max-w-2xl space-y-4">
+      <div className="flex-1 flex flex-col items-center justify-center gap-12">
+        <div className="w-full max-w-3xl space-y-8">
           {/* MYTH bar */}
-          <div className="flex items-center gap-4">
-            <span className="text-red-500 font-bold w-20 text-right text-lg">MYTH 💥</span>
-            <div className="flex-1 h-14 bg-black/10 dark:bg-white/5 rounded-2xl overflow-hidden backdrop-blur-sm border border-black/5 dark:border-white/5">
+          <div className="flex flex-col gap-2">
+            <span className="text-[#FF0000] font-black text-2xl tracking-tighter">MYTH</span>
+            <div className="w-full h-20 border-4 border-black dark:border-white bg-transparent relative">
               <motion.div
-                className="h-full bg-linear-to-r from-red-600 to-red-400 flex items-center justify-end pr-4 rounded-2xl shadow-lg shadow-red-500/20"
+                className="h-full bg-[#FF0000] flex items-center justify-end pr-6 border-r-4 border-black dark:border-white"
                 initial={{ width: '0%' }}
                 animate={{ width: `${mythPct}%` }}
                 transition={{ type: 'spring', stiffness: 80 }}
               >
                 {votes.MYTH > 0 && (
-                  <span className="text-white font-bold text-xl drop-shadow-md">{votes.MYTH}</span>
+                  <span className="text-white font-black text-3xl">{votes.MYTH}</span>
                 )}
               </motion.div>
+              <span className="absolute top-1/2 -translate-y-1/2 right-4 text-black dark:text-white font-bold mix-blend-difference">{Math.round(mythPct)}%</span>
             </div>
-            <span className="opacity-40 w-10 text-sm font-medium">{Math.round(mythPct)}%</span>
           </div>
 
           {/* FACT bar */}
-          <div className="flex items-center gap-4">
-            <span className="text-green-600 dark:text-green-400 font-bold w-20 text-right text-lg">FACT ✅</span>
-            <div className="flex-1 h-14 bg-black/10 dark:bg-white/5 rounded-2xl overflow-hidden backdrop-blur-sm border border-black/5 dark:border-white/5">
+          <div className="flex flex-col gap-2">
+            <span className="text-[#16A34A] font-black text-2xl tracking-tighter">FACT</span>
+            <div className="w-full h-20 border-4 border-black dark:border-white bg-transparent relative">
               <motion.div
-                className="h-full bg-linear-to-r from-green-700 to-green-500 flex items-center justify-end pr-4 rounded-2xl shadow-lg shadow-green-500/20"
+                className="h-full bg-[#16A34A] flex items-center justify-end pr-6 border-r-4 border-black dark:border-white"
                 initial={{ width: '0%' }}
                 animate={{ width: `${factPct}%` }}
                 transition={{ type: 'spring', stiffness: 80 }}
               >
                 {votes.FACT > 0 && (
-                  <span className="text-white font-bold text-xl drop-shadow-md">{votes.FACT}</span>
+                  <span className="text-white font-black text-3xl">{votes.FACT}</span>
                 )}
               </motion.div>
+              <span className="absolute top-1/2 -translate-y-1/2 right-4 text-black dark:text-white font-bold mix-blend-difference">{Math.round(factPct)}%</span>
             </div>
-            <span className="opacity-40 w-10 text-sm font-medium">{Math.round(factPct)}%</span>
           </div>
         </div>
 
         {/* Recent voter bubble */}
         <AnimatePresence mode="wait">
           {recentVoter && !revealed && (
-            <motion.p
+            <motion.div
               key={recentVoter + total}
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
-              className="opacity-50 text-sm font-medium"
+              className="border-2 border-black dark:border-white px-4 py-2 bg-yellow-400 text-black font-bold uppercase"
             >
-              {recentVoter} just voted
-            </motion.p>
+              + {recentVoter} VOTED
+            </motion.div>
           )}
         </AnimatePresence>
 
@@ -155,23 +154,19 @@ export default function MythBusterPresenter({ config, participantCount, response
             <motion.div
               initial={{ opacity: 0, scale: 0.7 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="text-center space-y-3"
+              className="text-center space-y-6 border-8 border-black dark:border-white p-8 bg-[#FF0000] text-white shadow-[16px_16px_0px_rgba(190,242,100,1)] z-10"
             >
-              <div className="text-6xl drop-shadow-2xl">💥 BUSTED!</div>
-              <p className="text-3xl font-bold text-[#16A34A] dark:text-[#BEF264]">{myth?.bust}</p>
+              <div className="text-6xl md:text-8xl font-black tracking-tighter leading-none">BUSTED!</div>
+              <p className="text-2xl md:text-4xl font-bold">{myth?.bust}</p>
               {results.fastest && results.fastest.length > 0 && (
-                <p className="opacity-50 text-sm">
-                  Fastest correct: <span className="font-bold opacity-100">{results.fastest[0]?.name}</span>
-                </p>
+                <div className="border-t-4 border-white pt-4 mt-4">
+                  <p className="text-sm font-bold tracking-widest">FASTEST NODE</p>
+                  <p className="text-2xl font-black">{results.fastest[0]?.name}</p>
+                </div>
               )}
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
-
-      {/* Bottom counter */}
-      <div className="text-center opacity-40 text-sm mt-4 font-medium">
-        {total} of {participantCount} voted
       </div>
     </div>
   );

@@ -26,17 +26,19 @@ export default function BuildYourBotPresenter({ participantCount, responses = {}
   }
 
   return (
-    <div className="flex flex-col h-full px-6 py-4">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="opacity-50 text-sm uppercase tracking-widest font-medium">Team Roster</h3>
-        <div className="flex items-center gap-3">
-          <span className="opacity-40 text-sm font-medium">{bots.length} / {participantCount} deployed</span>
+    <div className="flex flex-col h-full px-8 py-8 relative font-mono uppercase">
+      <div className="flex items-center justify-between mb-8 border-b-4 border-black dark:border-white pb-4">
+        <h3 className="text-xl font-black tracking-tighter">ROBOT.ASSEMBLY</h3>
+        <div className="flex items-center gap-4">
+          <span className="text-sm font-bold bg-[#FF0000] text-white px-4 py-1 border-2 border-black dark:border-white">
+            {bots.length} / {participantCount}
+          </span>
           {bots.length > 0 && (
             <button
               onClick={runTeam}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#BEF264] to-[#16A34A] text-black font-bold text-sm hover:opacity-90 transition-opacity shadow-lg shadow-green-500/20"
+              className="px-6 py-2 border-4 border-black bg-[#BEF264] text-black font-black text-sm hover:bg-black hover:text-[#BEF264] hover:border-[#BEF264] transition-none"
             >
-              Run the team! ⚡
+              RUN.TEAM
             </button>
           )}
         </div>
@@ -44,11 +46,11 @@ export default function BuildYourBotPresenter({ participantCount, responses = {}
 
       <div className="flex-1 overflow-auto">
         {bots.length === 0 ? (
-          <div className="flex items-center justify-center h-48 opacity-30 text-sm font-medium">
-            Bots will appear as participants deploy them...
+          <div className="flex items-center justify-center h-64 border-4 border-dashed border-black/30 dark:border-white/30 text-2xl font-bold opacity-50">
+            [ WAITING_FOR_ASSEMBLY ]
           </div>
         ) : (
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-6 items-end">
             <AnimatePresence>
               {bots.map((bot, i) => {
                 const bodyDef = BOT_BODIES.find(b => b.id === bot.body);
@@ -56,36 +58,37 @@ export default function BuildYourBotPresenter({ participantCount, responses = {}
                 return (
                   <motion.div
                     key={bot.botName}
-                    initial={{ opacity: 0, scale: 0.5, y: 30 }}
-                    animate={{
-                      opacity: 1,
-                      scale: running ? [1, 1.1, 1] : 1,
-                      y: 0,
-                    }}
-                    transition={running
-                      ? { scale: { duration: 0.4, delay: i * 0.05, repeat: 3, repeatType: 'reverse' } }
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={running ? {
+                      x: [0, Math.random() * 20 - 10, 0],
+                      y: [0, -20, 0],
+                      rotate: [0, Math.random() * 10 - 5, 0]
+                    } : { opacity: 1, y: 0, x: 0, rotate: 0 }}
+                    transition={running 
+                      ? { duration: 0.3, repeat: Infinity, delay: i * 0.1 } 
                       : { type: 'spring', stiffness: 200, delay: 0.05 }
                     }
-                    className="bg-white/80 dark:bg-black/40 backdrop-blur-xl border border-black/10 dark:border-white/10 rounded-2xl p-4 w-36 flex flex-col items-center gap-2 text-center shadow-lg"
-                    style={running ? { borderColor: powerDef ? '#16A34A' : 'transparent' } : {}}
+                    className="border-4 border-black dark:border-white bg-white dark:bg-black p-4 w-40 flex flex-col items-center gap-4 text-center shadow-[8px_8px_0px_rgba(0,255,0,1)] hover:-translate-y-2 hover:shadow-[12px_12px_0px_rgba(0,255,0,1)] transition-all"
                   >
-                    <div className="relative">
-                      <span className="text-4xl">{bodyDef?.emoji}</span>
+                    <div className="relative bg-black/5 dark:bg-white/5 w-full aspect-square flex items-center justify-center border-2 border-black dark:border-white">
+                      <span className="text-6xl">{bodyDef?.emoji}</span>
                       <motion.span
-                        className="absolute -bottom-1 -right-1 text-lg"
-                        animate={running ? { scale: [1, 1.5, 1] } : {}}
-                        transition={{ duration: 0.3, delay: i * 0.05 + 0.2, repeat: running ? 3 : 0 }}
+                        className="absolute -bottom-3 -right-3 text-3xl bg-white dark:bg-black rounded-full border-2 border-black dark:border-white p-1"
+                        animate={running ? { scale: [1, 1.3, 1] } : {}}
+                        transition={{ duration: 0.2, delay: i * 0.05, repeat: running ? Infinity : 0 }}
                       >
                         {powerDef?.emoji}
                       </motion.span>
                     </div>
-                    <div>
-                      <p className="text-[#16A34A] dark:text-[#BEF264] font-bold text-sm drop-shadow-sm">{bot.botName}</p>
+                    <div className="w-full">
+                      <p className="bg-black text-white dark:bg-white dark:text-black font-black text-sm py-1 px-2 border-2 border-black dark:border-white w-full truncate" title={bot.botName}>
+                        {bot.botName}
+                      </p>
                       {bot.participantName && (
-                        <p className="opacity-40 text-xs font-medium">{bot.participantName}</p>
+                        <p className="text-xs font-bold mt-2 truncate">BY: {bot.participantName}</p>
                       )}
                     </div>
-                    <p className="opacity-60 text-xs leading-tight font-medium">{bot.job}</p>
+                    <p className="text-[10px] font-bold tracking-widest opacity-80 border-t-2 border-black dark:border-white w-full pt-2">{bot.job}</p>
                   </motion.div>
                 );
               })}

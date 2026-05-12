@@ -65,24 +65,24 @@ export default function TechStackPresenter({ config, participantCount, responses
     .map(([id]) => id);
 
   return (
-    <div className="flex flex-col h-full px-6 py-6 relative">
-      <div className="text-center mb-12 relative z-10">
-        <p className="opacity-50 text-sm uppercase tracking-widest font-medium mb-2">Scenario</p>
-        <h2 className="text-2xl font-bold max-w-3xl mx-auto leading-relaxed drop-shadow-md">
+    <div className="flex flex-col h-full px-8 py-8 relative font-mono uppercase">
+      <div className="text-center mb-16 relative z-10 border-8 border-black dark:border-white p-8 bg-white dark:bg-black shadow-[16px_16px_0px_rgba(0,0,255,1)]">
+        <p className="text-sm font-bold tracking-widest mb-4 bg-black text-white dark:bg-white dark:text-black inline-block px-4 py-1">SCENARIO</p>
+        <h2 className="text-3xl md:text-5xl font-black max-w-4xl mx-auto leading-none tracking-tighter text-black dark:text-white">
           {scenario?.text}
         </h2>
       </div>
 
-      <div className="flex-1 relative">
-        <svg className="absolute inset-0 w-full h-full overflow-visible">
+      <div className="flex-1 relative flex items-center justify-center min-h-[500px]">
+        <svg className="absolute inset-0 w-full h-full overflow-visible pointer-events-none">
           {revealed && edges.map((e, i) => (
             <motion.line
               key={`e-${i}`}
               x1={positions[e.from].x} y1={positions[e.from].y}
               x2={positions[e.to].x} y2={positions[e.to].y}
               stroke="currentColor"
-              strokeWidth={Math.min(e.weight * 2, 10)}
-              className="opacity-20"
+              strokeWidth={Math.max(2, Math.min(e.weight * 4, 16))}
+              className="text-black dark:text-white opacity-20"
               initial={{ pathLength: 0 }}
               animate={{ pathLength: 1 }}
               transition={{ duration: 1, delay: i * 0.05 }}
@@ -105,26 +105,26 @@ export default function TechStackPresenter({ config, participantCount, responses
               transition={{ delay: i * 0.05 }}
             >
               <motion.div
-                className={`relative flex items-center justify-center rounded-full shadow-lg ${
-                  revealed && isTop ? 'bg-linear-to-br from-[#BEF264] to-[#16A34A] text-black shadow-green-500/30' : 'bg-black/10 dark:bg-white/10 backdrop-blur-md border border-black/10 dark:border-white/10'
+                className={`relative flex items-center justify-center border-4 border-black dark:border-white ${
+                  revealed && isTop ? 'bg-[#BEF264] text-black' : 'bg-white dark:bg-black text-black dark:text-white'
                 }`}
                 animate={{
-                  width: revealed ? 50 + (count / maxCount) * 40 : 50,
-                  height: revealed ? 50 + (count / maxCount) * 40 : 50,
+                  width: revealed ? 60 + (count / maxCount) * 40 : 60,
+                  height: revealed ? 60 + (count / maxCount) * 40 : 60,
                 }}
               >
-                <span className="text-2xl z-10">{tech.emoji}</span>
+                <span className="text-3xl z-10">{tech.emoji}</span>
                 {revealed && count > 0 && (
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="absolute -top-2 -right-2 bg-[#3B82F6] text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shadow-lg"
+                    className="absolute -top-4 -right-4 bg-[#FF0000] text-white text-lg font-black px-3 py-1 border-2 border-black dark:border-white shadow-[4px_4px_0px_rgba(0,0,0,1)]"
                   >
                     {count}
                   </motion.div>
                 )}
               </motion.div>
-              <span className={`text-xs font-bold ${revealed && isTop ? 'text-[#16A34A] drop-shadow-md' : 'opacity-60'}`}>
+              <span className={`text-sm font-black px-2 py-1 border-2 border-black dark:border-white ${revealed && isTop ? 'bg-black text-[#BEF264] dark:bg-white dark:text-black' : 'bg-white text-black dark:bg-black dark:text-white'}`}>
                 {tech.label}
               </span>
             </motion.div>
@@ -132,8 +132,11 @@ export default function TechStackPresenter({ config, participantCount, responses
         })}
       </div>
 
-      <div className="text-center opacity-40 text-sm mt-4 font-medium">
-        {total} of {participantCount} submitted
+      <div className="text-center font-bold text-sm mt-8 border-t-4 border-black dark:border-white pt-4 flex justify-between">
+        <span>STATUS: ACTIVE</span>
+        <span className="bg-[#0000FF] text-white px-4 py-1 border-2 border-black dark:border-white">
+          {total} / {participantCount} LOGGED
+        </span>
       </div>
     </div>
   );
