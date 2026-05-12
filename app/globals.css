@@ -1,26 +1,48 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --green: #16A34A;
+  --lime: #BEF264;
+  --bg: #0B0B0B;
+  --card: #161616;
+  --border: #2a2a2a;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+* { box-sizing: border-box; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: white;
+  font-family: var(--font-inter, system-ui, sans-serif);
+  -webkit-font-smoothing: antialiased;
 }
+
+@keyframes fly-in {
+  from { opacity: 0; transform: translateY(30px) scale(0.92); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes pop-in {
+  0%   { opacity: 0; transform: scale(0.5); }
+  70%  { transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(190,242,100,0); }
+  50%       { box-shadow: 0 0 24px 6px rgba(190,242,100,0.35); }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes truth-fill {
+  from { width: 0; }
+}
+
+.fly-in     { animation: fly-in 0.45s cubic-bezier(0.22,1,0.36,1) both; }
+.pop-in     { animation: pop-in 0.4s cubic-bezier(0.22,1,0.36,1) both; }
+.pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+.slide-up   { animation: slide-up 0.3s ease-out both; }
