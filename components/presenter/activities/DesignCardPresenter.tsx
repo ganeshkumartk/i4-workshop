@@ -31,8 +31,8 @@ export default function DesignCardPresenter({ participantCount, responses = {} }
   return (
     <div className="flex flex-col h-full px-6 py-6 relative">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-white/50 text-sm uppercase tracking-widest">Design Cards</h3>
-        <span className="text-white/30 text-sm">{cards.length} / {participantCount} submitted</span>
+        <h3 className="opacity-50 text-sm uppercase tracking-widest font-medium">Design Cards</h3>
+        <span className="opacity-40 text-sm font-medium">{cards.length} / {participantCount} submitted</span>
       </div>
 
       <div className="flex-1 overflow-auto">
@@ -51,7 +51,7 @@ export default function DesignCardPresenter({ participantCount, responses = {} }
         </div>
 
         {cards.length === 0 && (
-          <div className="flex items-center justify-center h-48 text-white/20 text-sm">
+          <div className="flex items-center justify-center h-48 opacity-30 text-sm font-medium">
             Cards will appear here as participants submit...
           </div>
         )}
@@ -64,7 +64,7 @@ export default function DesignCardPresenter({ participantCount, responses = {} }
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-black/80 flex items-center justify-center z-50 p-8"
+            className="absolute inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-8"
             onClick={() => setSpotlight(null)}
           >
             <motion.div
@@ -72,10 +72,10 @@ export default function DesignCardPresenter({ participantCount, responses = {} }
               animate={{ scale: 1 }}
               exit={{ scale: 0.7 }}
               onClick={e => e.stopPropagation()}
-              className="w-full max-w-md"
+              className="w-full max-w-md shadow-2xl"
             >
               <DesignCard card={spotlight} large />
-              <p className="text-center text-white/30 text-xs mt-3">Click anywhere to close</p>
+              <p className="text-center text-white/50 text-xs mt-3 font-medium drop-shadow-md">Click anywhere to close</p>
             </motion.div>
           </motion.div>
         )}
@@ -91,15 +91,15 @@ function DesignCard({ card, large }: { card: Card; large?: boolean }) {
   const bodySize = large ? 'text-base' : 'text-xs';
 
   return (
-    <div className={`bg-[#161616] border border-[#2a2a2a] rounded-2xl ${size} ${large ? 'w-full' : 'w-52'} space-y-3`}>
+    <div className={`bg-white/80 dark:bg-black/40 backdrop-blur-xl border border-black/10 dark:border-white/10 rounded-2xl ${size} ${large ? 'w-full' : 'w-52'} space-y-3 shadow-lg`}>
       <div className="flex items-center gap-3">
         <span className={emojiSize}>{card.object?.emoji}</span>
         <div>
-          <p className={`text-white font-bold ${titleSize}`}>
+          <p className={`font-bold ${titleSize}`}>
             {card.name || `Smart ${card.object?.label}`}
           </p>
           {card.participantName && (
-            <p className="text-white/30 text-xs">{card.participantName}</p>
+            <p className="opacity-40 text-xs font-medium">{card.participantName}</p>
           )}
         </div>
       </div>
@@ -111,7 +111,7 @@ function DesignCard({ card, large }: { card: Card; large?: boolean }) {
           >
             {key}
           </span>
-          <span className={`text-white/70 ${bodySize}`}>{card[key]}</span>
+          <span className={`opacity-80 font-medium ${bodySize}`}>{card[key]}</span>
         </div>
       ))}
     </div>

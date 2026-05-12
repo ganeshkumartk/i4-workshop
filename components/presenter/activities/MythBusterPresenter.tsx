@@ -86,10 +86,10 @@ export default function MythBusterPresenter({ config, participantCount, response
         animate={{ opacity: 1, y: 0 }}
         className="text-center mb-8"
       >
-        <p className="text-white/30 text-sm uppercase tracking-widest mb-3">
+        <p className="opacity-40 text-sm uppercase tracking-widest mb-3">
           Round {(config?.mythIndex ?? 0) + 1} of 4
         </p>
-        <h2 className="text-4xl font-bold text-white leading-tight max-w-2xl mx-auto">
+        <h2 className="text-4xl font-bold leading-tight max-w-2xl mx-auto">
           {myth?.statement}
         </h2>
       </motion.div>
@@ -99,38 +99,38 @@ export default function MythBusterPresenter({ config, participantCount, response
         <div className="w-full max-w-2xl space-y-4">
           {/* MYTH bar */}
           <div className="flex items-center gap-4">
-            <span className="text-red-400 font-bold w-20 text-right text-lg">MYTH 💥</span>
-            <div className="flex-1 h-14 bg-[#1a1a1a] rounded-2xl overflow-hidden">
+            <span className="text-red-500 font-bold w-20 text-right text-lg">MYTH 💥</span>
+            <div className="flex-1 h-14 bg-black/10 dark:bg-white/5 rounded-2xl overflow-hidden backdrop-blur-sm border border-black/5 dark:border-white/5">
               <motion.div
-                className="h-full bg-gradient-to-r from-red-600 to-red-400 flex items-center justify-end pr-4 rounded-2xl"
+                className="h-full bg-linear-to-r from-red-600 to-red-400 flex items-center justify-end pr-4 rounded-2xl shadow-lg shadow-red-500/20"
                 initial={{ width: '0%' }}
                 animate={{ width: `${mythPct}%` }}
                 transition={{ type: 'spring', stiffness: 80 }}
               >
                 {votes.MYTH > 0 && (
-                  <span className="text-white font-bold text-xl">{votes.MYTH}</span>
+                  <span className="text-white font-bold text-xl drop-shadow-md">{votes.MYTH}</span>
                 )}
               </motion.div>
             </div>
-            <span className="text-white/40 w-10 text-sm">{Math.round(mythPct)}%</span>
+            <span className="opacity-40 w-10 text-sm font-medium">{Math.round(mythPct)}%</span>
           </div>
 
           {/* FACT bar */}
           <div className="flex items-center gap-4">
-            <span className="text-green-400 font-bold w-20 text-right text-lg">FACT ✅</span>
-            <div className="flex-1 h-14 bg-[#1a1a1a] rounded-2xl overflow-hidden">
+            <span className="text-green-600 dark:text-green-400 font-bold w-20 text-right text-lg">FACT ✅</span>
+            <div className="flex-1 h-14 bg-black/10 dark:bg-white/5 rounded-2xl overflow-hidden backdrop-blur-sm border border-black/5 dark:border-white/5">
               <motion.div
-                className="h-full bg-gradient-to-r from-green-700 to-green-500 flex items-center justify-end pr-4 rounded-2xl"
+                className="h-full bg-linear-to-r from-green-700 to-green-500 flex items-center justify-end pr-4 rounded-2xl shadow-lg shadow-green-500/20"
                 initial={{ width: '0%' }}
                 animate={{ width: `${factPct}%` }}
                 transition={{ type: 'spring', stiffness: 80 }}
               >
                 {votes.FACT > 0 && (
-                  <span className="text-white font-bold text-xl">{votes.FACT}</span>
+                  <span className="text-white font-bold text-xl drop-shadow-md">{votes.FACT}</span>
                 )}
               </motion.div>
             </div>
-            <span className="text-white/40 w-10 text-sm">{Math.round(factPct)}%</span>
+            <span className="opacity-40 w-10 text-sm font-medium">{Math.round(factPct)}%</span>
           </div>
         </div>
 
@@ -142,7 +142,7 @@ export default function MythBusterPresenter({ config, participantCount, response
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
-              className="text-white/40 text-sm"
+              className="opacity-50 text-sm font-medium"
             >
               {recentVoter} just voted
             </motion.p>
@@ -157,11 +157,11 @@ export default function MythBusterPresenter({ config, participantCount, response
               animate={{ opacity: 1, scale: 1 }}
               className="text-center space-y-3"
             >
-              <div className="text-6xl">💥 BUSTED!</div>
-              <p className="text-2xl font-bold text-[#BEF264]">{myth?.bust}</p>
+              <div className="text-6xl drop-shadow-2xl">💥 BUSTED!</div>
+              <p className="text-3xl font-bold text-[#16A34A] dark:text-[#BEF264]">{myth?.bust}</p>
               {results.fastest && results.fastest.length > 0 && (
-                <p className="text-white/40 text-sm">
-                  Fastest correct: <span className="text-white">{results.fastest[0]?.name}</span>
+                <p className="opacity-50 text-sm">
+                  Fastest correct: <span className="font-bold opacity-100">{results.fastest[0]?.name}</span>
                 </p>
               )}
             </motion.div>
@@ -170,7 +170,7 @@ export default function MythBusterPresenter({ config, participantCount, response
       </div>
 
       {/* Bottom counter */}
-      <div className="text-center text-white/30 text-sm mt-4">
+      <div className="text-center opacity-40 text-sm mt-4 font-medium">
         {total} of {participantCount} voted
       </div>
     </div>

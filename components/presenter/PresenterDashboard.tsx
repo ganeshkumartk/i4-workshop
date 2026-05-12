@@ -9,6 +9,8 @@ import TechStackPresenter from './activities/TechStackPresenter';
 import BuildYourBotPresenter from './activities/BuildYourBotPresenter';
 import LiveCounter from '@/components/shared/LiveCounter';
 
+import LivingBackground from '@/components/shared/LivingBackground';
+
 type ActivityId = 'mythBuster' | 'designCard' | 'techStack' | 'buildYourBot';
 
 const ACTIVITIES = [
@@ -29,6 +31,7 @@ export default function PresenterDashboard() {
   const [mythIndex, setMythIndex] = useState(0);
   const [scenarioId, setScenarioId] = useState('s1');
   const [qrUrl, setQrUrl] = useState('');
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const emit = useEmit();
 
   useEffect(() => {
@@ -82,19 +85,36 @@ export default function PresenterDashboard() {
   const isActive = sessionState.phase === 'active';
   const isReveal = sessionState.phase === 'reveal';
   const isLobby = sessionState.phase === 'lobby';
+  const isDark = theme === 'dark';
+
+  const panelBg = isDark ? 'bg-black/60 border-white/10' : 'bg-white/60 border-black/10';
+  const textColor = isDark ? 'text-white' : 'text-slate-900';
+  const mutedText = isDark ? 'text-white/50' : 'text-slate-500';
+  const inputBg = isDark ? 'bg-[#1a1a1a]/80 border-white/10' : 'bg-slate-100/80 border-black/10';
+
+  const intensity = Math.min((sessionState.participantCount || 0) / 20, 1) + (isActive ? 0.5 : 0) + (isReveal ? 0.8 : 0);
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className={`flex h-screen overflow-hidden ${textColor} relative ${isDark ? 'dark' : ''}`}>
+      <LivingBackground theme={theme} intensity={intensity} />
+      
       {/* ── Sidebar ─────────────────────────────────────────────────── */}
-      <div className="w-72 shrink-0 flex flex-col bg-[#0f0f0f] border-r border-[#2a2a2a]">
+      <div className={`w-72 shrink-0 flex flex-col ${panelBg} backdrop-blur-xl border-r z-10`}>
         {/* Logo */}
-        <div className="flex items-center gap-3 px-5 py-4 border-b border-[#2a2a2a]">
+        <div className={`flex items-center gap-3 px-5 py-4 border-b ${isDark ? 'border-white/10' : 'border-black/10'}`}>
           <span className="text-xl">⚙️</span>
           <div>
-            <p className="text-white font-bold text-sm">I4.0 Workshop</p>
-            <p className="text-white/30 text-xs">D-CoE · IISc</p>
+            <p className="font-bold text-sm">I4.0 Workshop</p>
+            <p className={`text-xs ${mutedText}`}>D-CoE · IISc</p>
           </div>
           <div className="ml-auto flex items-center gap-1.5">
+            <button 
+              onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
+              className="text-lg hover:scale-110 transition-transform mr-2"
+              title="Toggle Theme"
+            >
+              {isDark ? '☀️' : '🌙'}
+            </button>
             <div className="w-2 h-2 rounded-full bg-[#16A34A]" />
             <span className="text-[#16A34A] text-xs font-medium">{sessionState.participantCount || 0}</span>
           </div>
@@ -102,9 +122,9 @@ export default function PresenterDashboard() {
 
         {/* QR code */}
         {isLobby && qrUrl && (
-          <div className="p-4 border-b border-[#2a2a2a]">
-            <p className="text-white/30 text-xs text-center mb-2">Scan to join</p>
-            <div className="bg-white rounded-xl p-2 mx-auto w-fit">
+          <div className={`p-4 border-b ${isDark ? 'border-white/10' : 'border-black/10'}`}>
+            <p className={`text-xs text-center mb-2 ${mutedText}`}>Scan to join</p>
+            <div className="bg-white rounded-xl p-2 mx-auto w-fit shadow-xl">
               <img src={qrUrl} alt="QR Code" className="w-28 h-28" />
             </div>
           </div>
@@ -112,7 +132,7 @@ export default function PresenterDashboard() {
 
         {/* Activity selector */}
         <div className="px-4 py-3 flex-1">
-          <p className="text-white/30 text-xs uppercase tracking-wider mb-3">Activities</p>
+          <p className={`text-xs uppercase tracking-wider mb-3 ${mutedText}`}>Activities</p>
           <div className="space-y-2">
             {ACTIVITIES.map(act => (
               <button
@@ -121,17 +141,17 @@ export default function PresenterDashboard() {
                 disabled={isActive}
                 className={`w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all ${
                   selected === act.id && !isActive
-                    ? 'bg-[#16A34A]/20 border border-[#16A34A]/40'
-                    : 'border border-transparent hover:bg-[#1a1a1a]'
+                    ? (isDark ? 'bg-[#16A34A]/20 border border-[#16A34A]/40' : 'bg-[#16A34A]/10 border border-[#16A34A]/40')
+                    : `border border-transparent hover:${isDark ? 'bg-white/5' : 'bg-black/5'}`
                 } disabled:opacity-50`}
               >
                 <span className="text-xl">{act.emoji}</span>
                 <div>
-                  <p className="text-white text-sm font-medium">{act.label}</p>
-                  <p className="text-white/30 text-xs">{act.desc}</p>
+                  <p className="text-sm font-medium">{act.label}</p>
+                  <p className={`text-xs ${mutedText}`}>{act.desc}</p>
                 </div>
                 {sessionState.currentActivity === act.id && (
-                  <span className="ml-auto text-[#BEF264] text-xs">●</span>
+                  <span className="ml-auto text-[#16A34A] text-xs">●</span>
                 )}
               </button>
             ))}
@@ -139,13 +159,13 @@ export default function PresenterDashboard() {
         </div>
 
         {/* Config & controls */}
-        <div className="px-4 py-4 border-t border-[#2a2a2a] space-y-3">
+        <div className={`px-4 py-4 border-t ${isDark ? 'border-white/10' : 'border-black/10'} space-y-3`}>
           {/* Config options */}
           {!isActive && selected === 'mythBuster' && (
             <select
               value={mythIndex}
               onChange={e => setMythIndex(Number(e.target.value))}
-              className="w-full bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl px-3 py-2 text-white text-xs focus:outline-none"
+              className={`w-full ${inputBg} rounded-xl px-3 py-2 text-xs focus:outline-none`}
             >
               {MYTHS.map((m, i) => (
                 <option key={m.id} value={i}>Round {i + 1}: {m.statement.slice(0, 35)}…</option>
@@ -156,7 +176,7 @@ export default function PresenterDashboard() {
             <select
               value={scenarioId}
               onChange={e => setScenarioId(e.target.value)}
-              className="w-full bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl px-3 py-2 text-white text-xs focus:outline-none"
+              className={`w-full ${inputBg} rounded-xl px-3 py-2 text-xs focus:outline-none`}
             >
               {STACK_SCENARIOS.map(s => (
                 <option key={s.id} value={s.id}>{s.text.slice(0, 50)}…</option>
@@ -177,7 +197,7 @@ export default function PresenterDashboard() {
             <button
               onClick={startActivity}
               disabled={sessionState.participantCount === 0}
-              className="w-full py-3 rounded-xl bg-[#16A34A] text-white font-bold text-sm hover:bg-green-500 transition-colors disabled:opacity-40"
+              className="w-full py-3 rounded-xl bg-[#16A34A] text-white font-bold text-sm hover:bg-green-500 transition-colors disabled:opacity-40 shadow-lg shadow-green-500/20"
             >
               Start activity →
             </button>
@@ -185,7 +205,7 @@ export default function PresenterDashboard() {
           {isActive && (
             <button
               onClick={() => sendCommand('reveal')}
-              className="w-full py-3 rounded-xl bg-[#BEF264] text-black font-bold text-sm hover:bg-lime-300 transition-colors"
+              className="w-full py-3 rounded-xl bg-linear-to-r from-[#BEF264] to-[#16A34A] text-black font-bold text-sm hover:opacity-90 transition-opacity shadow-lg shadow-green-500/20"
             >
               Reveal results ✨
             </button>
@@ -193,7 +213,11 @@ export default function PresenterDashboard() {
           {(isReveal || sessionState.phase === 'discuss') && (
             <button
               onClick={() => sendCommand('reset')}
-              className="w-full py-3 rounded-xl bg-[#1a1a1a] text-white/60 font-bold text-sm hover:bg-[#2a2a2a] transition-colors border border-[#2a2a2a]"
+              className={`w-full py-3 rounded-xl font-bold text-sm transition-colors border ${
+                isDark 
+                  ? 'bg-white/5 text-white/60 hover:bg-white/10 border-white/10' 
+                  : 'bg-black/5 text-black/60 hover:bg-black/10 border-black/10'
+              }`}
             >
               ← Next activity
             </button>
@@ -202,13 +226,13 @@ export default function PresenterDashboard() {
       </div>
 
       {/* ── Main display ─────────────────────────────────────────────── */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden z-10">
         {/* Phase bar */}
-        <div className="flex items-center justify-between px-6 py-3 border-b border-[#2a2a2a] bg-[#0f0f0f]">
+        <div className={`flex items-center justify-between px-6 py-3 border-b ${isDark ? 'border-white/10 bg-black/40' : 'border-black/10 bg-white/40'} backdrop-blur-md`}>
           <div className="flex items-center gap-3">
-            <span className="text-sm text-white/40">Phase:</span>
+            <span className={`text-sm ${mutedText}`}>Phase:</span>
             <span className={`text-sm font-semibold ${
-              isActive ? 'text-[#BEF264]' : isReveal ? 'text-orange-400' : 'text-white/40'
+              isActive ? 'text-[#16A34A]' : isReveal ? 'text-orange-500' : mutedText
             }`}>
               {sessionState.phase.toUpperCase()}
             </span>
@@ -232,20 +256,22 @@ export default function PresenterDashboard() {
                 exit={{ opacity: 0 }}
                 className="flex flex-col items-center justify-center h-full gap-6 text-center"
               >
-                <div className="space-y-3">
-                  <p className="text-white/20 text-sm uppercase tracking-widest">Waiting for participants</p>
-                  <p className="text-white font-bold text-3xl">Industry 4.0 Workshop</p>
-                  <p className="text-white/40">
-                    {sessionState.participantCount === 0
-                      ? 'Share the QR code to get started'
-                      : `${sessionState.participantCount} people in the room`}
-                  </p>
-                </div>
-                {qrUrl && (
-                  <div className="bg-white rounded-2xl p-3">
-                    <img src={qrUrl} alt="QR" className="w-48 h-48" />
+                <div className={`p-12 rounded-3xl ${isDark ? 'bg-black/40' : 'bg-white/40'} backdrop-blur-2xl border ${isDark ? 'border-white/10' : 'border-black/10'} shadow-2xl`}>
+                  <div className="space-y-3">
+                    <p className={`text-sm uppercase tracking-widest ${mutedText}`}>Waiting for participants</p>
+                    <p className="font-bold text-4xl bg-linear-to-r from-[#3B82F6] to-[#16A34A] bg-clip-text text-transparent pb-1">Industry 4.0 Workshop</p>
+                    <p className={mutedText}>
+                      {sessionState.participantCount === 0
+                        ? 'Share the QR code to get started'
+                        : `${sessionState.participantCount} people in the room`}
+                    </p>
                   </div>
-                )}
+                  {qrUrl && (
+                    <div className="mt-8 bg-white rounded-2xl p-4 shadow-xl mx-auto w-fit">
+                      <img src={qrUrl} alt="QR" className="w-56 h-56" />
+                    </div>
+                  )}
+                </div>
               </motion.div>
             ) : sessionState.currentActivity === 'mythBuster' ? (
               <motion.div key="myth" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="h-full">

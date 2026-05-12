@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { TECHNOLOGIES } from '@/lib/data';
+import { getScenario } from '@/lib/activityEngine';
 
 interface Props {
   config: { scenarioId?: string };
@@ -13,10 +14,12 @@ const RADIUS = 220;
 const CX = 300;
 const CY = 300;
 
-export default function TechStackPresenter({ participantCount, responses = {} }: Props) {
+export default function TechStackPresenter({ config, participantCount, responses = {} }: Props) {
   const responseArray = Object.values(responses);
   const total = responseArray.length;
   const revealed = !!responses && Object.keys(responses).length > 0; // Or passed via state
+
+  const scenario = getScenario(config?.scenarioId);
 
   const techCounts: Record<string, number> = {};
   const coOccurrence: Record<string, Record<string, number>> = {};
@@ -62,122 +65,76 @@ export default function TechStackPresenter({ participantCount, responses = {} }:
     .map(([id]) => id);
 
   return (
-    <div className="flex flex-col h-full px-6 py-4">
-      <div className="flex items-center justify-between mb-2">
-        <h3 className="text-white/50 text-sm uppercase tracking-widest">Tech Stack Constellation</h3>
-        <span className="text-white/30 text-sm">{total} / {participantCount} submitted</span>
+    <div className="flex flex-col h-full px-6 py-6 relative">
+      <div className="text-center mb-12 relative z-10">
+        <p className="opacity-50 text-sm uppercase tracking-widest font-medium mb-2">Scenario</p>
+        <h2 className="text-2xl font-bold max-w-3xl mx-auto leading-relaxed drop-shadow-md">
+          {scenario?.text}
+        </h2>
       </div>
 
-      <div className="flex-1 flex items-center justify-center">
-        <svg viewBox="0 0 600 600" className="w-full max-w-[580px] max-h-[580px]">
-          {/* Edges */}
-          {edges.map((edge, i) => {
-            const from = positions[edge.from];
-            const to = positions[edge.to];
-            const opacity = 0.1 + (edge.weight / maxEdge) * 0.7;
-            const strokeW = 0.5 + (edge.weight / maxEdge) * 3;
-            const aIsTop = topTechs.includes(TECHNOLOGIES[edge.from].id);
-            const bIsTop = topTechs.includes(TECHNOLOGIES[edge.to].id);
-            const highlight = revealed && aIsTop && bIsTop;
-            return (
-              <motion.line
-                key={i}
-                x1={from.x} y1={from.y}
-                x2={to.x} y2={to.y}
-                stroke={highlight ? '#BEF264' : '#ffffff'}
-                strokeOpacity={highlight ? 0.8 : opacity}
-                strokeWidth={strokeW}
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: opacity }}
-                transition={{ duration: 0.5, delay: i * 0.02 }}
-              />
-            );
-          })}
+      <div className="flex-1 relative">
+        <svg className="absolute inset-0 w-full h-full overflow-visible">
+          {revealed && edges.map((e, i) => (
+            <motion.line
+              key={`e-${i}`}
+              x1={positions[e.from].x} y1={positions[e.from].y}
+              x2={positions[e.to].x} y2={positions[e.to].y}
+              stroke="currentColor"
+              strokeWidth={Math.min(e.weight * 2, 10)}
+              className="opacity-20"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 1, delay: i * 0.05 }}
+            />
+          ))}
+        </svg>
 
-          {/* Nodes */}
-          {TECHNOLOGIES.map((tech, i) => {
-            const pos = positions[i];
-            const count = techCounts[tech.id] || 0;
-            const scale = 1 + (count / maxCount) * 1.8;
-            const isTop = revealed && topTechs.includes(tech.id);
-            const baseR = 26;
-            return (
-              <g key={tech.id}>
-                {isTop && (
-                  <motion.circle
-                    cx={pos.x} cy={pos.y}
-                    r={baseR * scale + 8}
-                    fill="none"
-                    stroke="#BEF264"
-                    strokeWidth="1.5"
-                    strokeOpacity={0.6}
-                    animate={{ r: [baseR * scale + 8, baseR * scale + 14, baseR * scale + 8] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                )}
-                <motion.circle
-                  cx={pos.x} cy={pos.y}
-                  fill={tech.color}
-                  fillOpacity={0.85}
-                  initial={{ r: baseR }}
-                  animate={{ r: baseR * scale }}
-                  transition={{ type: 'spring', stiffness: 120 }}
-                />
-                <text
-                  x={pos.x} y={pos.y}
-                  textAnchor="middle"
-                  dominantBaseline="central"
-                  fontSize={Math.max(14, 14 * scale)}
-                  style={{ userSelect: 'none' }}
-                >
-                  {tech.emoji}
-                </text>
-                {count > 0 && (
-                  <text
-                    x={pos.x} y={pos.y + baseR * scale + 16}
-                    textAnchor="middle"
-                    fill={isTop ? '#BEF264' : 'white'}
-                    fontSize="12"
-                    fontWeight={isTop ? 'bold' : 'normal'}
-                    fillOpacity={0.9}
+        {positions.map((pos, i) => {
+          const tech = TECHNOLOGIES[i];
+          const count = techCounts[tech.id] || 0;
+          const isTop = topTechs.includes(tech.id);
+          
+          return (
+            <motion.div
+              key={tech.id}
+              className="absolute transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2"
+              style={{ left: pos.x, top: pos.y }}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: i * 0.05 }}
+            >
+              <motion.div
+                className={`relative flex items-center justify-center rounded-full shadow-lg ${
+                  revealed && isTop ? 'bg-linear-to-br from-[#BEF264] to-[#16A34A] text-black shadow-green-500/30' : 'bg-black/10 dark:bg-white/10 backdrop-blur-md border border-black/10 dark:border-white/10'
+                }`}
+                animate={{
+                  width: revealed ? 50 + (count / maxCount) * 40 : 50,
+                  height: revealed ? 50 + (count / maxCount) * 40 : 50,
+                }}
+              >
+                <span className="text-2xl z-10">{tech.emoji}</span>
+                {revealed && count > 0 && (
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="absolute -top-2 -right-2 bg-[#3B82F6] text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center shadow-lg"
                   >
                     {count}
-                  </text>
+                  </motion.div>
                 )}
-                <text
-                  x={pos.x} y={pos.y + baseR * scale + 30}
-                  textAnchor="middle"
-                  fill="white"
-                  fontSize="11"
-                  fillOpacity={0.4}
-                >
-                  {tech.label.split(' ')[0]}
-                </text>
-              </g>
-            );
-          })}
-        </svg>
+              </motion.div>
+              <span className={`text-xs font-bold ${revealed && isTop ? 'text-[#16A34A] drop-shadow-md' : 'opacity-60'}`}>
+                {tech.label}
+              </span>
+            </motion.div>
+          );
+        })}
       </div>
 
-      {/* Top stack reveal */}
-      {revealed && topTechs.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center justify-center gap-6 py-4 border-t border-[#2a2a2a]"
-        >
-          <span className="text-white/40 text-sm">Most popular stack:</span>
-          {topTechs.map(id => {
-            const t = TECHNOLOGIES.find(t => t.id === id)!;
-            return (
-              <div key={id} className="flex items-center gap-1.5 bg-[#161616] rounded-xl px-3 py-2">
-                <span className="text-xl">{t.emoji}</span>
-                <span className="text-sm text-white/80">{t.label.split(' ')[0]}</span>
-              </div>
-            );
-          })}
-        </motion.div>
-      )}
+      <div className="text-center opacity-40 text-sm mt-4 font-medium">
+        {total} of {participantCount} submitted
+      </div>
     </div>
   );
 }
