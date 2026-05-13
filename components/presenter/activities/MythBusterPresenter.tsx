@@ -51,45 +51,19 @@ export default function MythBusterPresenter({ config, participantCount, response
   const factPct = total > 0 ? (votes.FACT / total) * 100 : 50;
 
   return (
-    <div className="flex flex-col h-full px-12 py-8 relative overflow-hidden font-mono">
-      {/* Confetti */}
-      {showConfetti && (
-        <div className="absolute inset-0 pointer-events-none z-50 overflow-hidden">
-          {Array.from({ length: 40 }).map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-4 h-4 border-2 border-black dark:border-white"
-              style={{
-                left: `${Math.random() * 100}%`,
-                background: ['#BEF264', '#16A34A', '#EF4444', '#F59E0B', '#3B82F6'][i % 5],
-                top: -20,
-              }}
-              animate={{
-                y: ['0vh', '110vh'],
-                rotate: [0, Math.random() * 720 - 360],
-              }}
-              transition={{
-                duration: 3 + Math.random() * 2,
-                delay: Math.random() * 1.5,
-                ease: 'linear',
-              }}
-            />
-          ))}
-        </div>
-      )}
-
-      {/* Statement */}
+    <div className="flex flex-col h-full px-12 py-12 relative font-sans">
       <motion.div
         key={myth?.id}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-12 border-8 border-black dark:border-white p-8 bg-[#BEF264] dark:bg-[#0000FF] shadow-[12px_12px_0px_rgba(255,0,0,1)]"
+        transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1.0] }}
+        className="text-center mb-12"
       >
-        <p className="text-black dark:text-white text-sm font-bold tracking-widest mb-4">
-          ROUND {(config?.mythIndex ?? 0) + 1} / 4
+        <p className="text-[#6B6560] text-[10px] uppercase tracking-[0.2em] mb-6">
+          Statement {(config?.mythIndex ?? 0) + 1} of 4
         </p>
-        <h2 className="text-4xl md:text-5xl font-black leading-none text-black dark:text-white uppercase tracking-tighter">
-          {myth?.statement}
+        <h2 className="text-4xl font-serif font-light text-[#1C1C1C] leading-[1.3] max-w-3xl mx-auto">
+          &ldquo;{myth?.statement}&rdquo;
         </h2>
       </motion.div>
 
@@ -97,76 +71,94 @@ export default function MythBusterPresenter({ config, participantCount, response
       <div className="flex-1 flex flex-col items-center justify-center gap-12">
         <div className="w-full max-w-3xl space-y-8">
           {/* MYTH bar */}
-          <div className="flex flex-col gap-2">
-            <span className="text-[#FF0000] font-black text-2xl tracking-tighter">MYTH</span>
-            <div className="w-full h-20 border-4 border-black dark:border-white bg-transparent relative">
+          <div className="flex items-center gap-6">
+            <span className="text-[#8B4A34] font-medium tracking-[0.1em] w-24 text-right text-xs uppercase">Myth</span>
+            <div className="flex-1 h-1 bg-[#E8E4DF] relative">
               <motion.div
-                className="h-full bg-[#FF0000] flex items-center justify-end pr-6 border-r-4 border-black dark:border-white"
+                className="absolute inset-y-0 left-0 bg-[#8B4A34]"
                 initial={{ width: '0%' }}
                 animate={{ width: `${mythPct}%` }}
-                transition={{ type: 'spring', stiffness: 80 }}
+                transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1.0] }}
+              />
+              <motion.div 
+                className="absolute -top-8 text-[#8B4A34] font-serif text-2xl transform -translate-x-1/2"
+                initial={{ left: '0%' }}
+                animate={{ left: `${mythPct}%` }}
+                transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1.0] }}
               >
-                {votes.MYTH > 0 && (
-                  <span className="text-white font-black text-3xl">{votes.MYTH}</span>
-                )}
+                {votes.MYTH > 0 ? votes.MYTH : ''}
               </motion.div>
-              <span className="absolute top-1/2 -translate-y-1/2 right-4 text-black dark:text-white font-bold mix-blend-difference">{Math.round(mythPct)}%</span>
             </div>
+            <span className="text-[#6B6560] w-12 text-xs tracking-wider">{Math.round(mythPct)}%</span>
           </div>
 
           {/* FACT bar */}
-          <div className="flex flex-col gap-2">
-            <span className="text-[#16A34A] font-black text-2xl tracking-tighter">FACT</span>
-            <div className="w-full h-20 border-4 border-black dark:border-white bg-transparent relative">
+          <div className="flex items-center gap-6">
+            <span className="text-[#7A8B76] font-medium tracking-[0.1em] w-24 text-right text-xs uppercase">Fact</span>
+            <div className="flex-1 h-1 bg-[#E8E4DF] relative">
               <motion.div
-                className="h-full bg-[#16A34A] flex items-center justify-end pr-6 border-r-4 border-black dark:border-white"
+                className="absolute inset-y-0 left-0 bg-[#7A8B76]"
                 initial={{ width: '0%' }}
                 animate={{ width: `${factPct}%` }}
-                transition={{ type: 'spring', stiffness: 80 }}
+                transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1.0] }}
+              />
+              <motion.div 
+                className="absolute -top-8 text-[#7A8B76] font-serif text-2xl transform -translate-x-1/2"
+                initial={{ left: '0%' }}
+                animate={{ left: `${factPct}%` }}
+                transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1.0] }}
               >
-                {votes.FACT > 0 && (
-                  <span className="text-white font-black text-3xl">{votes.FACT}</span>
-                )}
+                {votes.FACT > 0 ? votes.FACT : ''}
               </motion.div>
-              <span className="absolute top-1/2 -translate-y-1/2 right-4 text-black dark:text-white font-bold mix-blend-difference">{Math.round(factPct)}%</span>
             </div>
+            <span className="text-[#6B6560] w-12 text-xs tracking-wider">{Math.round(factPct)}%</span>
           </div>
         </div>
 
         {/* Recent voter bubble */}
-        <AnimatePresence mode="wait">
-          {recentVoter && !revealed && (
-            <motion.div
-              key={recentVoter + total}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              className="border-2 border-black dark:border-white px-4 py-2 bg-yellow-400 text-black font-bold uppercase"
-            >
-              + {recentVoter} VOTED
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <div className="h-6">
+          <AnimatePresence mode="wait">
+            {recentVoter && !revealed && (
+              <motion.p
+                key={recentVoter + total}
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.6 }}
+                className="text-[#6B6560] text-xs italic"
+              >
+                {recentVoter} responded
+              </motion.p>
+            )}
+          </AnimatePresence>
+        </div>
 
         {/* Reveal result */}
         <AnimatePresence>
           {revealed && results && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.7 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="text-center space-y-6 border-8 border-black dark:border-white p-8 bg-[#FF0000] text-white shadow-[16px_16px_0px_rgba(190,242,100,1)] z-10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1.0] }}
+              className="text-center space-y-6 mt-8"
             >
-              <div className="text-6xl md:text-8xl font-black tracking-tighter leading-none">BUSTED!</div>
-              <p className="text-2xl md:text-4xl font-bold">{myth?.bust}</p>
+              <div className="text-[10px] tracking-[0.3em] uppercase text-[#8B7D56]">The Reality</div>
+              <p className="text-2xl font-serif text-[#1C1C1C] max-w-2xl leading-relaxed mx-auto">
+                {myth?.bust}
+              </p>
               {results.fastest && results.fastest.length > 0 && (
-                <div className="border-t-4 border-white pt-4 mt-4">
-                  <p className="text-sm font-bold tracking-widest">FASTEST NODE</p>
-                  <p className="text-2xl font-black">{results.fastest[0]?.name}</p>
-                </div>
+                <p className="text-[#6B6560] text-xs pt-4 border-t border-[#E8E4DF] w-fit mx-auto px-8">
+                  Fastest correct response: <span className="text-[#1C1C1C] font-medium">{results.fastest[0]?.name}</span>
+                </p>
               )}
             </motion.div>
           )}
         </AnimatePresence>
+      </div>
+
+      {/* Bottom counter */}
+      <div className="text-center text-[#8D8881] text-[10px] uppercase tracking-[0.2em] mt-8">
+        {total} of {participantCount} submitted
       </div>
     </div>
   );

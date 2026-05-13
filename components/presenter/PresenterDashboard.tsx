@@ -9,6 +9,8 @@ import TechStackPresenter from './activities/TechStackPresenter';
 import BuildYourBotPresenter from './activities/BuildYourBotPresenter';
 import LiveCounter from '@/components/shared/LiveCounter';
 
+import AtelierBackground from '@/components/shared/AtelierBackground';
+
 type ActivityId = 'mythBuster' | 'designCard' | 'techStack' | 'buildYourBot';
 
 const ACTIVITIES = [
@@ -29,7 +31,6 @@ export default function PresenterDashboard() {
   const [mythIndex, setMythIndex] = useState(0);
   const [scenarioId, setScenarioId] = useState('s1');
   const [qrUrl, setQrUrl] = useState('');
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const emit = useEmit();
 
   useEffect(() => {
@@ -83,77 +84,65 @@ export default function PresenterDashboard() {
   const isActive = sessionState.phase === 'active';
   const isReveal = sessionState.phase === 'reveal';
   const isLobby = sessionState.phase === 'lobby';
-  const isDark = theme === 'dark';
 
-  const bg = isDark ? 'bg-black' : 'bg-white';
-  const text = isDark ? 'text-white' : 'text-black';
-  const border = isDark ? 'border-white' : 'border-black';
-  const invertBg = isDark ? 'bg-white' : 'bg-black';
-  const invertText = isDark ? 'text-black' : 'text-white';
-  const highlightBg = isDark ? 'bg-[#BEF264]' : 'bg-[#0000FF]';
-  const highlightText = isDark ? 'text-black' : 'text-white';
+  // Atelier-luxe palette mapping
+  const panelBg = 'bg-[#FAF8F5]/80 border-[#E8E4DF]';
+  const textColor = 'text-[#1C1C1C]';
+  const mutedText = 'text-[#6B6560]';
+  const inputBg = 'bg-[#F2EDE6] border-[#E8E4DF]';
+  const accentText = 'text-[#8B7D56]'; // Aged brass
+  const accentBg = 'bg-[#8B7D56] text-white hover:bg-[#7A6C4A]';
 
   return (
-    <div className={`flex h-screen overflow-hidden ${bg} ${text} font-mono uppercase selection:bg-[#FF0000] selection:text-white`}>
+    <div className={`flex h-screen overflow-hidden ${textColor} relative bg-[#F9F8F6] font-serif selection:bg-[#E8E4DF]`}>
+      <AtelierBackground />
       
       {/* ── Sidebar ─────────────────────────────────────────────────── */}
-      <div className={`w-80 shrink-0 flex flex-col border-r-4 ${border} z-10`}>
+      <div className={`w-80 shrink-0 flex flex-col ${panelBg} backdrop-blur-xl border-r z-10`}>
         {/* Logo */}
-        <div className={`flex items-center gap-3 px-5 py-4 border-b-4 ${border}`}>
-          <div className={`w-8 h-8 ${invertBg} ${invertText} flex items-center justify-center font-bold text-xl`}>
-            !
-          </div>
+        <div className={`flex items-center gap-4 px-6 py-6 border-b border-[#E8E4DF]`}>
           <div>
-            <p className="font-bold text-lg tracking-tighter leading-none">I4.0 WORKSHOP</p>
-            <p className="text-[10px] font-bold tracking-widest mt-1">D-COE // IISC</p>
+            <p className="font-semibold text-lg tracking-tight">I4.0 Workshop</p>
+            <p className={`text-xs uppercase tracking-[0.15em] mt-1 ${mutedText}`}>D-CoE · IISc</p>
           </div>
-          <div className="ml-auto flex items-center gap-3">
-            <button 
-              onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
-              className={`w-8 h-8 flex items-center justify-center border-2 ${border} hover:${invertBg} hover:${invertText} transition-none font-bold`}
-              title="Toggle Theme"
-            >
-              {isDark ? 'L' : 'D'}
-            </button>
-            <div className={`flex items-center gap-2 px-2 py-1 border-2 ${border}`}>
-              <div className={`w-3 h-3 ${isDark ? 'bg-[#BEF264]' : 'bg-[#0000FF]'}`} />
-              <span className="text-sm font-bold">{sessionState.participantCount || 0}</span>
-            </div>
+          <div className="ml-auto flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#8B7D56]" />
+            <span className={`${accentText} text-xs font-medium font-sans tracking-widest`}>{sessionState.participantCount || 0}</span>
           </div>
         </div>
 
         {/* QR code */}
         {isLobby && qrUrl && (
-          <div className={`p-4 border-b-4 ${border} bg-[#FF0000]`}>
-            <p className="text-xs font-bold text-white text-center mb-2 tracking-widest">SCAN.TO.JOIN</p>
-            <div className="bg-white p-2 mx-auto w-fit border-4 border-black">
-              <img src={qrUrl} alt="QR Code" className="w-32 h-32" />
+          <div className={`p-6 border-b border-[#E8E4DF] flex flex-col items-center`}>
+            <p className={`text-[10px] uppercase tracking-[0.2em] mb-4 ${mutedText}`}>Scan to enter</p>
+            <div className="bg-white p-3 border border-[#E8E4DF] shadow-sm">
+              <img src={qrUrl} alt="QR Code" className="w-32 h-32 opacity-90 mix-blend-multiply" />
             </div>
           </div>
         )}
 
         {/* Activity selector */}
-        <div className="px-4 py-4 flex-1 overflow-y-auto">
-          <p className="text-[10px] font-bold tracking-widest mb-4">SELECT.ACTIVITY</p>
-          <div className="space-y-3">
+        <div className="px-6 py-6 flex-1">
+          <p className={`text-[10px] uppercase tracking-[0.2em] mb-4 ${mutedText}`}>Exhibition</p>
+          <div className="space-y-1">
             {ACTIVITIES.map(act => (
               <button
                 key={act.id}
                 onClick={() => setSelected(act.id)}
                 disabled={isActive}
-                className={`w-full flex items-start gap-3 p-3 text-left border-2 ${border} ${
+                className={`w-full flex items-start gap-4 p-4 text-left transition-all duration-500 ease-out border-b ${
                   selected === act.id && !isActive
-                    ? `${invertBg} ${invertText}`
-                    : `hover:${highlightBg} hover:${highlightText}`
-                } disabled:opacity-30 disabled:cursor-not-allowed transition-none`}
+                    ? 'border-[#1C1C1C]'
+                    : 'border-transparent hover:border-[#E8E4DF]'
+                } disabled:opacity-40`}
               >
-                <span className="text-2xl leading-none mt-1">{act.emoji}</span>
+                <span className="text-lg opacity-80 mt-0.5 grayscale">{act.emoji}</span>
                 <div>
-                  <p className="text-lg font-bold leading-tight">{act.label}</p>
-                  <p className="text-[10px] tracking-widest mt-1 opacity-80">{act.desc}</p>
+                  <p className="text-sm font-medium tracking-wide">{act.label}</p>
+                  <p className={`text-xs mt-1 font-sans ${mutedText} leading-relaxed`}>{act.desc}</p>
                 </div>
                 {sessionState.currentActivity === act.id && (
-                  <span className={`ml-auto text-xl font-bold ${selected === act.id && !isActive ? invertText : highlightText}`}>*</span>
+                  <span className={`ml-auto ${accentText} text-[10px] tracking-widest`}>ACTIVE</span>
                 )}
               </button>
             ))}
@@ -161,16 +150,16 @@ export default function PresenterDashboard() {
         </div>
 
         {/* Config & controls */}
-        <div className={`px-4 py-4 border-t-4 ${border} space-y-4`}>
+        <div className={`px-6 py-6 border-t border-[#E8E4DF] space-y-4`}>
           {/* Config options */}
           {!isActive && selected === 'mythBuster' && (
             <select
               value={mythIndex}
               onChange={e => setMythIndex(Number(e.target.value))}
-              className={`w-full ${bg} ${text} border-2 ${border} px-3 py-3 text-xs font-bold focus:outline-none focus:ring-4 focus:ring-[#FF0000] appearance-none rounded-none`}
+              className={`w-full ${inputBg} border px-4 py-3 text-sm font-sans focus:outline-none appearance-none cursor-pointer`}
             >
               {MYTHS.map((m, i) => (
-                <option key={m.id} value={i}>ROUND {i + 1} // {m.statement.slice(0, 20)}…</option>
+                <option key={m.id} value={i}>Statement {i + 1}: {m.statement.slice(0, 35)}…</option>
               ))}
             </select>
           )}
@@ -178,19 +167,21 @@ export default function PresenterDashboard() {
             <select
               value={scenarioId}
               onChange={e => setScenarioId(e.target.value)}
-              className={`w-full ${bg} ${text} border-2 ${border} px-3 py-3 text-xs font-bold focus:outline-none focus:ring-4 focus:ring-[#FF0000] appearance-none rounded-none`}
+              className={`w-full ${inputBg} border px-4 py-3 text-sm font-sans focus:outline-none appearance-none cursor-pointer`}
             >
               {STACK_SCENARIOS.map(s => (
-                <option key={s.id} value={s.id}>{s.id} // {s.text.slice(0, 20)}…</option>
+                <option key={s.id} value={s.id}>{s.text.slice(0, 50)}…</option>
               ))}
             </select>
           )}
 
           {/* Progress */}
           {isActive && (
-            <div className={`p-4 border-4 ${border} ${highlightBg} ${highlightText}`}>
-              <p className="text-xs font-bold mb-1 tracking-widest">RESPONSES</p>
-              <p className="text-4xl font-bold leading-none">{sessionState.responseCount || 0} / {sessionState.participantCount || 0}</p>
+            <div className="py-2">
+              <LiveCounter
+                current={sessionState.responseCount || 0}
+                total={sessionState.participantCount || 0}
+              />
             </div>
           )}
 
@@ -199,44 +190,52 @@ export default function PresenterDashboard() {
             <button
               onClick={startActivity}
               disabled={sessionState.participantCount === 0}
-              className={`w-full py-4 border-4 ${border} ${invertBg} ${invertText} font-bold text-xl hover:bg-[#FF0000] hover:text-white hover:border-[#FF0000] transition-none disabled:opacity-30`}
+              className={`w-full py-4 text-xs tracking-[0.2em] uppercase transition-all duration-500 disabled:opacity-30 ${accentBg}`}
             >
-              START.NOW
+              Begin
             </button>
           )}
           {isActive && (
             <button
               onClick={() => sendCommand('reveal')}
-              className={`w-full py-4 border-4 border-black bg-[#BEF264] text-black font-bold text-xl hover:bg-[#FF0000] hover:text-white transition-none`}
+              className={`w-full py-4 text-xs tracking-[0.2em] uppercase transition-all duration-500 bg-[#1C1C1C] text-white hover:bg-[#2A2A2A]`}
             >
-              REVEAL.RESULTS
+              Reveal
             </button>
           )}
           {(isReveal || sessionState.phase === 'discuss') && (
             <button
               onClick={() => sendCommand('reset')}
-              className={`w-full py-4 border-4 ${border} bg-transparent ${text} font-bold text-lg hover:${invertBg} hover:${invertText} transition-none`}
+              className={`w-full py-4 text-xs tracking-[0.2em] uppercase transition-all duration-500 border border-[#1C1C1C] hover:bg-[#E8E4DF]`}
             >
-              // RESET.SYSTEM
+              Next
             </button>
           )}
         </div>
       </div>
 
       {/* ── Main display ─────────────────────────────────────────────── */}
-      <div className="flex-1 flex flex-col overflow-hidden z-10">
+      <div className="flex-1 flex flex-col overflow-hidden z-10 font-sans">
         {/* Phase bar */}
-        <div className={`flex items-center justify-between px-8 py-4 border-b-4 ${border} ${invertBg} ${invertText}`}>
+        <div className={`flex items-center justify-between px-10 py-5 border-b border-[#E8E4DF] bg-transparent`}>
           <div className="flex items-center gap-4">
-            <span className="text-sm font-bold tracking-widest">CURRENT.PHASE:</span>
-            <span className="text-2xl font-bold">
-              [{sessionState.phase.toUpperCase()}]
+            <span className={`text-[10px] uppercase tracking-[0.2em] ${mutedText}`}>Status</span>
+            <span className={`text-xs uppercase tracking-[0.15em] font-medium ${
+              isActive ? accentText : isReveal ? 'text-[#1C1C1C]' : mutedText
+            }`}>
+              {sessionState.phase}
             </span>
           </div>
+          {isActive && (
+            <LiveCounter
+              current={sessionState.responseCount || 0}
+              total={sessionState.participantCount || 0}
+            />
+          )}
         </div>
 
         {/* Activity content */}
-        <div className={`flex-1 overflow-hidden bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IiM4ODgiIGZpbGwtb3BhY2l0eT0iMC4yIi8+PC9zdmc+')]`}>
+        <div className="flex-1 overflow-hidden">
           <AnimatePresence mode="wait">
             {isLobby ? (
               <motion.div
@@ -244,18 +243,19 @@ export default function PresenterDashboard() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="flex flex-col items-center justify-center h-full gap-8 p-12"
+                transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1.0] }}
+                className="flex flex-col items-center justify-center h-full gap-8 text-center"
               >
-                <div className={`border-8 ${border} p-16 max-w-4xl w-full ${bg} shadow-[16px_16px_0px_rgba(255,0,0,1)]`}>
-                  <p className="text-sm font-bold tracking-widest mb-4">SYSTEM.STATUS: WAITING</p>
-                  <h2 className="text-6xl md:text-8xl font-black leading-none mb-8 break-words tracking-tighter">
-                    INDUSTRY<br/>4.0<br/>WORKSHOP
-                  </h2>
-                  <div className={`inline-block border-4 ${border} px-6 py-3 font-bold text-2xl ${highlightBg} ${highlightText}`}>
+                <div className="space-y-6 max-w-lg mx-auto">
+                  <p className={`text-xs uppercase tracking-[0.3em] ${mutedText}`}>Arrival</p>
+                  <h1 className="font-serif text-5xl font-light tracking-tight text-[#1C1C1C] leading-[1.1]">
+                    Industry 4.0
+                  </h1>
+                  <p className={`text-sm font-sans tracking-wide leading-relaxed ${mutedText}`}>
                     {sessionState.participantCount === 0
-                      ? 'AWAITING.CONNECTIONS...'
-                      : `ACTIVE.NODES: ${sessionState.participantCount}`}
-                  </div>
+                      ? 'Please scan the code to enter the exhibition.'
+                      : `${sessionState.participantCount} guests present.`}
+                  </p>
                 </div>
               </motion.div>
             ) : sessionState.currentActivity === 'mythBuster' ? (

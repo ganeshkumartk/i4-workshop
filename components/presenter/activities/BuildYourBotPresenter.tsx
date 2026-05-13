@@ -26,19 +26,17 @@ export default function BuildYourBotPresenter({ participantCount, responses = {}
   }
 
   return (
-    <div className="flex flex-col h-full px-8 py-8 relative font-mono uppercase">
-      <div className="flex items-center justify-between mb-8 border-b-4 border-black dark:border-white pb-4">
-        <h3 className="text-xl font-black tracking-tighter">ROBOT.ASSEMBLY</h3>
-        <div className="flex items-center gap-4">
-          <span className="text-sm font-bold bg-[#FF0000] text-white px-4 py-1 border-2 border-black dark:border-white">
-            {bots.length} / {participantCount}
-          </span>
+    <div className="flex flex-col h-full px-12 py-12 relative font-sans">
+      <div className="flex items-center justify-between mb-8 border-b border-[#E8E4DF] pb-4">
+        <h3 className="text-[#6B6560] text-[10px] uppercase tracking-[0.2em]">Team Roster</h3>
+        <div className="flex items-center gap-6">
+          <span className="text-[#6B6560] text-[10px] uppercase tracking-[0.2em]">{bots.length} / {participantCount} deployed</span>
           {bots.length > 0 && (
             <button
               onClick={runTeam}
-              className="px-6 py-2 border-4 border-black bg-[#BEF264] text-black font-black text-sm hover:bg-black hover:text-[#BEF264] hover:border-[#BEF264] transition-none"
+              className="px-6 py-2.5 bg-[#1C1C1C] text-white text-[10px] uppercase tracking-[0.2em] transition-all duration-500 hover:bg-[#2A2A2A]"
             >
-              RUN.TEAM
+              Initialize Sequence
             </button>
           )}
         </div>
@@ -46,11 +44,11 @@ export default function BuildYourBotPresenter({ participantCount, responses = {}
 
       <div className="flex-1 overflow-auto">
         {bots.length === 0 ? (
-          <div className="flex items-center justify-center h-64 border-4 border-dashed border-black/30 dark:border-white/30 text-2xl font-bold opacity-50">
-            [ WAITING_FOR_ASSEMBLY ]
+          <div className="flex items-center justify-center h-64 text-[#8D8881] text-xs font-serif italic tracking-wide">
+            Awaiting assembly...
           </div>
         ) : (
-          <div className="flex flex-wrap gap-6 items-end">
+          <div className="flex flex-wrap gap-8 content-start">
             <AnimatePresence>
               {bots.map((bot, i) => {
                 const bodyDef = BOT_BODIES.find(b => b.id === bot.body);
@@ -58,37 +56,36 @@ export default function BuildYourBotPresenter({ participantCount, responses = {}
                 return (
                   <motion.div
                     key={bot.botName}
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={running ? {
-                      x: [0, Math.random() * 20 - 10, 0],
-                      y: [0, -20, 0],
-                      rotate: [0, Math.random() * 10 - 5, 0]
-                    } : { opacity: 1, y: 0, x: 0, rotate: 0 }}
-                    transition={running 
-                      ? { duration: 0.3, repeat: Infinity, delay: i * 0.1 } 
-                      : { type: 'spring', stiffness: 200, delay: 0.05 }
+                    initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                    animate={{
+                      opacity: 1,
+                      scale: running ? [1, 1.02, 1] : 1,
+                      y: 0,
+                    }}
+                    transition={running
+                      ? { scale: { duration: 0.8, delay: i * 0.1, repeat: 3, repeatType: 'reverse', ease: [0.25, 0.1, 0.25, 1.0] } }
+                      : { duration: 0.8, delay: i * 0.05, ease: [0.25, 0.1, 0.25, 1.0] }
                     }
-                    className="border-4 border-black dark:border-white bg-white dark:bg-black p-4 w-40 flex flex-col items-center gap-4 text-center shadow-[8px_8px_0px_rgba(0,255,0,1)] hover:-translate-y-2 hover:shadow-[12px_12px_0px_rgba(0,255,0,1)] transition-all"
+                    className="bg-[#FFFFFF] border border-[#E8E4DF] p-6 w-48 flex flex-col items-center gap-4 text-center transition-all duration-500 hover:border-[#D4CFC8] hover:shadow-md"
+                    style={running ? { borderColor: powerDef ? '#8B7D56' : '#E8E4DF' } : {}}
                   >
-                    <div className="relative bg-black/5 dark:bg-white/5 w-full aspect-square flex items-center justify-center border-2 border-black dark:border-white">
-                      <span className="text-6xl">{bodyDef?.emoji}</span>
+                    <div className="relative pt-2">
+                      <span className="text-5xl grayscale opacity-80">{bodyDef?.emoji}</span>
                       <motion.span
-                        className="absolute -bottom-3 -right-3 text-3xl bg-white dark:bg-black rounded-full border-2 border-black dark:border-white p-1"
-                        animate={running ? { scale: [1, 1.3, 1] } : {}}
-                        transition={{ duration: 0.2, delay: i * 0.05, repeat: running ? Infinity : 0 }}
+                        className="absolute -bottom-2 -right-2 text-2xl"
+                        animate={running ? { scale: [1, 1.2, 1] } : {}}
+                        transition={{ duration: 0.6, delay: i * 0.1 + 0.2, repeat: running ? 3 : 0 }}
                       >
                         {powerDef?.emoji}
                       </motion.span>
                     </div>
-                    <div className="w-full">
-                      <p className="bg-black text-white dark:bg-white dark:text-black font-black text-sm py-1 px-2 border-2 border-black dark:border-white w-full truncate" title={bot.botName}>
-                        {bot.botName}
-                      </p>
+                    <div className="pt-4 border-t border-[#E8E4DF] w-full mt-2">
+                      <p className="text-[#1C1C1C] font-serif text-lg leading-tight">{bot.botName}</p>
                       {bot.participantName && (
-                        <p className="text-xs font-bold mt-2 truncate">BY: {bot.participantName}</p>
+                        <p className="text-[#8D8881] text-[10px] uppercase tracking-[0.15em] mt-1">By {bot.participantName}</p>
                       )}
                     </div>
-                    <p className="text-[10px] font-bold tracking-widest opacity-80 border-t-2 border-black dark:border-white w-full pt-2">{bot.job}</p>
+                    <p className="text-[#6B6560] text-[11px] leading-relaxed mt-2">{bot.job}</p>
                   </motion.div>
                 );
               })}

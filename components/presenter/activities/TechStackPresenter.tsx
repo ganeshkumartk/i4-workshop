@@ -65,27 +65,27 @@ export default function TechStackPresenter({ config, participantCount, responses
     .map(([id]) => id);
 
   return (
-    <div className="flex flex-col h-full px-8 py-8 relative font-mono uppercase">
-      <div className="text-center mb-16 relative z-10 border-8 border-black dark:border-white p-8 bg-white dark:bg-black shadow-[16px_16px_0px_rgba(0,0,255,1)]">
-        <p className="text-sm font-bold tracking-widest mb-4 bg-black text-white dark:bg-white dark:text-black inline-block px-4 py-1">SCENARIO</p>
-        <h2 className="text-3xl md:text-5xl font-black max-w-4xl mx-auto leading-none tracking-tighter text-black dark:text-white">
+    <div className="flex flex-col h-full px-12 py-12 relative font-sans">
+      <div className="text-center mb-16 relative z-10">
+        <p className="text-[#6B6560] text-[10px] uppercase tracking-[0.2em] mb-6">Scenario</p>
+        <h2 className="text-3xl font-serif font-light text-[#1C1C1C] max-w-4xl mx-auto leading-relaxed">
           {scenario?.text}
         </h2>
       </div>
 
-      <div className="flex-1 relative flex items-center justify-center min-h-[500px]">
-        <svg className="absolute inset-0 w-full h-full overflow-visible pointer-events-none">
+      <div className="flex-1 relative">
+        <svg className="absolute inset-0 w-full h-full overflow-visible">
           {revealed && edges.map((e, i) => (
             <motion.line
               key={`e-${i}`}
               x1={positions[e.from].x} y1={positions[e.from].y}
               x2={positions[e.to].x} y2={positions[e.to].y}
-              stroke="currentColor"
-              strokeWidth={Math.max(2, Math.min(e.weight * 4, 16))}
-              className="text-black dark:text-white opacity-20"
+              stroke="#D4CFC8"
+              strokeWidth={Math.min(e.weight * 1.5, 6)}
+              className="opacity-60"
               initial={{ pathLength: 0 }}
               animate={{ pathLength: 1 }}
-              transition={{ duration: 1, delay: i * 0.05 }}
+              transition={{ duration: 1.5, delay: i * 0.1, ease: [0.25, 0.1, 0.25, 1.0] }}
             />
           ))}
         </svg>
@@ -98,33 +98,37 @@ export default function TechStackPresenter({ config, participantCount, responses
           return (
             <motion.div
               key={tech.id}
-              className="absolute transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2"
+              className="absolute transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-3"
               style={{ left: pos.x, top: pos.y }}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: i * 0.05 }}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.8, delay: i * 0.05, ease: [0.25, 0.1, 0.25, 1.0] }}
             >
               <motion.div
-                className={`relative flex items-center justify-center border-4 border-black dark:border-white ${
-                  revealed && isTop ? 'bg-[#BEF264] text-black' : 'bg-white dark:bg-black text-black dark:text-white'
+                className={`relative flex items-center justify-center rounded-full transition-colors duration-1000 ${
+                  revealed && isTop 
+                    ? 'bg-[#F9F8F6] border border-[#8B7D56] shadow-sm' 
+                    : 'bg-white border border-[#E8E4DF] grayscale opacity-70'
                 }`}
                 animate={{
                   width: revealed ? 60 + (count / maxCount) * 40 : 60,
                   height: revealed ? 60 + (count / maxCount) * 40 : 60,
                 }}
+                transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1.0] }}
               >
-                <span className="text-3xl z-10">{tech.emoji}</span>
+                <span className="text-2xl z-10" style={{ filter: revealed && isTop ? 'none' : 'grayscale(100%)' }}>{tech.emoji}</span>
                 {revealed && count > 0 && (
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="absolute -top-4 -right-4 bg-[#FF0000] text-white text-lg font-black px-3 py-1 border-2 border-black dark:border-white shadow-[4px_4px_0px_rgba(0,0,0,1)]"
+                    transition={{ delay: 0.5, type: 'spring' }}
+                    className="absolute -top-1 -right-1 bg-[#1C1C1C] text-white text-[10px] font-sans w-5 h-5 rounded-full flex items-center justify-center"
                   >
                     {count}
                   </motion.div>
                 )}
               </motion.div>
-              <span className={`text-sm font-black px-2 py-1 border-2 border-black dark:border-white ${revealed && isTop ? 'bg-black text-[#BEF264] dark:bg-white dark:text-black' : 'bg-white text-black dark:bg-black dark:text-white'}`}>
+              <span className={`text-[10px] tracking-wide uppercase font-medium ${revealed && isTop ? 'text-[#8B7D56]' : 'text-[#8D8881]'}`}>
                 {tech.label}
               </span>
             </motion.div>
@@ -132,11 +136,8 @@ export default function TechStackPresenter({ config, participantCount, responses
         })}
       </div>
 
-      <div className="text-center font-bold text-sm mt-8 border-t-4 border-black dark:border-white pt-4 flex justify-between">
-        <span>STATUS: ACTIVE</span>
-        <span className="bg-[#0000FF] text-white px-4 py-1 border-2 border-black dark:border-white">
-          {total} / {participantCount} LOGGED
-        </span>
+      <div className="text-center text-[#8D8881] text-[10px] uppercase tracking-[0.2em] mt-8">
+        {total} of {participantCount} submitted
       </div>
     </div>
   );

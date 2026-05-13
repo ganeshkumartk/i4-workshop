@@ -26,16 +26,16 @@ export default function ParticipantPage() {
   const showWaiting = joined && (sessionState.phase === 'lobby' || sessionState.phase === 'discuss' || sessionState.phase === 'reveal');
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden bg-white text-black font-mono uppercase">
+    <div className="h-screen flex flex-col overflow-hidden bg-[#0B0B0B]">
       {!joined ? (
         <JoinScreen onJoined={handleJoined} participantCount={sessionState.participantCount || 0} />
       ) : showActivity ? (
-        <div className="flex flex-col h-full border-8 border-black m-4 shadow-[8px_8px_0px_rgba(0,0,0,1)]">
-          <div className="flex items-center justify-between px-5 py-4 border-b-4 border-black bg-[#BEF264]">
-            <span className="text-black font-black text-sm tracking-tighter">NODE: {myName}</span>
-            <span className="text-black text-xs font-bold border-2 border-black px-2 py-1 bg-white">{sessionState.responseCount}/{sessionState.participantCount} LOGGED</span>
+        <div className="flex flex-col h-full">
+          <div className="flex items-center justify-between px-5 py-3 border-b border-[#2a2a2a]">
+            <span className="text-white/50 text-sm font-medium">Hey, {myName} 👋</span>
+            <span className="text-white/30 text-xs">{sessionState.responseCount}/{sessionState.participantCount} responded</span>
           </div>
-          <div className="flex-1 overflow-hidden bg-white">
+          <div className="flex-1 overflow-hidden">
             {activity === 'mythBuster' && (
               <MythBusterParticipant config={(sessionState.activityConfig || {}) as { mythIndex?: number }} />
             )}
@@ -57,28 +57,28 @@ export default function ParticipantPage() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="flex flex-col items-center justify-center h-full gap-6 text-center px-8 border-8 border-black m-4 shadow-[8px_8px_0px_rgba(255,0,0,1)] bg-white"
+          className="flex flex-col items-center justify-center h-full gap-4 text-center px-8"
         >
           {sessionState.phase === 'reveal' || sessionState.phase === 'discuss' ? (
             <>
-              <span className="text-6xl border-4 border-black p-4 bg-[#FF0000] shadow-[8px_8px_0px_rgba(0,0,0,1)]">🎉</span>
-              <p className="text-3xl font-black text-black tracking-tighter mt-4">RESULTS_ARE_IN</p>
-              <p className="text-black bg-[#BEF264] px-4 py-2 border-2 border-black font-bold">WATCH.THE.BIG.SCREEN</p>
+              <span className="text-5xl">🎉</span>
+              <p className="text-xl font-bold text-[#BEF264]">Results are in!</p>
+              <p className="text-white/40 text-sm">Watch the big screen</p>
             </>
           ) : (
             <>
-              <div className="flex gap-2">
+              <div className="flex gap-1">
                 {[0, 1, 2].map(i => (
                   <motion.div
                     key={i}
-                    className="w-4 h-4 border-2 border-black bg-[#0000FF]"
+                    className="w-2 h-2 rounded-full bg-[#16A34A]"
                     animate={{ scale: [1, 1.4, 1] }}
-                    transition={{ duration: 0.8, delay: i * 0.2, repeat: Infinity, ease: "linear" }}
+                    transition={{ duration: 0.8, delay: i * 0.2, repeat: Infinity }}
                   />
                 ))}
               </div>
-              <p className="text-black text-2xl font-black tracking-tighter">AWAITING_PRESENTER</p>
-              <p className="text-black font-bold border-2 border-black px-4 py-2 bg-[#BEF264]">{sessionState.participantCount} NODES ACTIVE</p>
+              <p className="text-white/50 text-lg font-medium">Waiting for the presenter…</p>
+              <p className="text-white/30 text-xs">{sessionState.participantCount} people in the room</p>
             </>
           )}
         </motion.div>

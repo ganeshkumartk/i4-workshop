@@ -29,21 +29,21 @@ export default function DesignCardPresenter({ participantCount, responses = {} }
   const [spotlight, setSpotlight] = useState<Card | null>(null);
 
   return (
-    <div className="flex flex-col h-full px-8 py-8 relative font-mono uppercase">
-      <div className="flex items-center justify-between mb-8 border-b-4 border-black dark:border-white pb-4">
-        <h3 className="text-xl font-black tracking-tighter">DESIGN.CARDS</h3>
-        <span className="text-sm font-bold bg-[#0000FF] text-white px-4 py-1 border-2 border-black dark:border-white">
-          {cards.length} / {participantCount}
-        </span>
+    <div className="flex flex-col h-full px-12 py-12 relative font-sans">
+      <div className="flex items-center justify-between mb-8 border-b border-[#E8E4DF] pb-4">
+        <h3 className="text-[#6B6560] text-[10px] uppercase tracking-[0.2em]">Exhibition</h3>
+        <span className="text-[#6B6560] text-[10px] uppercase tracking-[0.2em]">{cards.length} / {participantCount} objects</span>
       </div>
 
       <div className="flex-1 overflow-auto">
-        <div className="flex flex-wrap gap-6">
+        <div className="flex flex-wrap gap-8 content-start">
           {cards.map((card, i) => (
             <motion.div
               key={i}
-              className="cursor-pointer border-4 border-black dark:border-white bg-white dark:bg-black shadow-[8px_8px_0px_rgba(255,0,0,1)] hover:shadow-[12px_12px_0px_rgba(255,0,0,1)] hover:-translate-y-1 transition-all"
-              style={{ animationDelay: `${i * 0.05}s` }}
+              className="cursor-pointer group"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: i * 0.1, ease: [0.25, 0.1, 0.25, 1.0] }}
               onClick={() => setSpotlight(card)}
             >
               <DesignCard card={card} />
@@ -52,8 +52,8 @@ export default function DesignCardPresenter({ participantCount, responses = {} }
         </div>
 
         {cards.length === 0 && (
-          <div className="flex items-center justify-center h-64 border-4 border-dashed border-black/30 dark:border-white/30 text-2xl font-bold opacity-50">
-            [ WAITING_FOR_DATA ]
+          <div className="flex items-center justify-center h-64 text-[#8D8881] text-xs font-serif italic tracking-wide">
+            Awaiting submissions...
           </div>
         )}
       </div>
@@ -65,20 +65,22 @@ export default function DesignCardPresenter({ participantCount, responses = {} }
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-[#BEF264] flex items-center justify-center z-50 p-8"
+            transition={{ duration: 0.6 }}
+            className="absolute inset-0 bg-[#F9F8F6]/95 backdrop-blur-md flex items-center justify-center z-50 p-12"
             onClick={() => setSpotlight(null)}
           >
             <motion.div
-              initial={{ scale: 0.9, rotate: -2 }}
-              animate={{ scale: 1, rotate: 0 }}
-              exit={{ scale: 0.9, rotate: 2 }}
+              initial={{ y: 40, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 20, opacity: 0 }}
+              transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1.0] }}
               onClick={e => e.stopPropagation()}
-              className="w-full max-w-2xl border-8 border-black bg-white shadow-[24px_24px_0px_rgba(0,0,0,1)] text-black"
+              className="w-full max-w-2xl"
             >
               <DesignCard card={spotlight} large />
-              <div className="bg-black text-white p-2 text-center text-xs font-bold tracking-widest cursor-pointer hover:bg-[#FF0000]">
-                [ CLICK_TO_CLOSE ]
-              </div>
+              <p className="text-center text-[#8D8881] text-[10px] uppercase tracking-[0.2em] mt-12 cursor-pointer hover:text-[#1C1C1C] transition-colors" onClick={() => setSpotlight(null)}>
+                Close
+              </p>
             </motion.div>
           </motion.div>
         )}
@@ -88,35 +90,44 @@ export default function DesignCardPresenter({ participantCount, responses = {} }
 }
 
 function DesignCard({ card, large }: { card: Card; large?: boolean }) {
-  const size = large ? 'p-8' : 'p-4';
-  const emojiSize = large ? 'text-6xl' : 'text-3xl';
-  const titleSize = large ? 'text-4xl' : 'text-lg';
-  const bodySize = large ? 'text-xl' : 'text-xs';
+  const size = large ? 'p-12' : 'p-6';
+  const emojiSize = large ? 'text-5xl' : 'text-3xl';
+  const titleSize = large ? 'text-2xl' : 'text-base';
+  const bodySize = large ? 'text-sm' : 'text-[11px]';
+
+  // Map vibrant layer colors to muted atelier ones
+  const ATELIER_COLORS: Record<string, string> = {
+    sense: '#8B7D56',   // brass
+    report: '#4A5B69',  // slate
+    decide: '#7A8B76',  // sage
+    deliver: '#8B4A34', // rust
+  };
 
   return (
-    <div className={`flex flex-col ${size} ${large ? 'w-full' : 'w-64'} space-y-6`}>
-      <div className="flex items-center gap-4 border-b-4 border-black pb-4">
-        <span className={emojiSize}>{card.object?.emoji}</span>
-        <div>
-          <p className={`font-black tracking-tighter leading-none ${titleSize} text-black dark:text-white`}>
-            {card.name || `SMART_${card.object?.label}`}
+    <div className={`bg-[#FFFFFF] border border-[#E8E4DF] ${size} ${large ? 'w-full shadow-2xl shadow-black/5' : 'w-64 hover:border-[#D4CFC8] hover:shadow-md transition-all duration-500'} space-y-6 relative overflow-hidden group`}>
+      <div className="flex items-start gap-4">
+        <span className={`${emojiSize} grayscale group-hover:grayscale-0 transition-all duration-700`}>{card.object?.emoji}</span>
+        <div className="pt-1">
+          <p className={`font-serif text-[#1C1C1C] leading-tight ${titleSize}`}>
+            {card.name || `Smart ${card.object?.label}`}
           </p>
           {card.participantName && (
-            <p className="text-black dark:text-white bg-[#BEF264] dark:bg-[#0000FF] px-2 py-1 text-xs font-bold w-fit mt-2 border-2 border-black dark:border-white">
-              NODE: {card.participantName}
+            <p className="text-[#8D8881] text-[10px] uppercase tracking-[0.15em] mt-2">
+              By {card.participantName}
             </p>
           )}
         </div>
       </div>
-      <div className="space-y-4">
+      <div className={`${large ? 'space-y-4 pt-4 border-t border-[#E8E4DF]' : 'space-y-3 pt-2'} `}>
         {(['sense', 'report', 'decide', 'deliver'] as const).map(key => (
           <div key={key} className="flex gap-4 items-start">
             <span
-              className={`font-black w-24 shrink-0 uppercase border-2 border-black dark:border-white px-2 py-1 text-center bg-black text-white dark:bg-white dark:text-black ${bodySize}`}
+              className={`font-medium w-16 shrink-0 capitalize ${bodySize} tracking-[0.1em]`}
+              style={{ color: ATELIER_COLORS[key] }}
             >
               {key}
             </span>
-            <span className={`font-bold text-black dark:text-white ${bodySize}`}>{card[key]}</span>
+            <span className={`text-[#6B6560] leading-relaxed ${bodySize}`}>{card[key]}</span>
           </div>
         ))}
       </div>
