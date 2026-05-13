@@ -5,7 +5,7 @@ import JoinScreen from '@/components/participant/JoinScreen';
 import MythBusterParticipant from '@/components/participant/activities/MythBusterParticipant';
 import DesignCardParticipant from '@/components/participant/activities/DesignCardParticipant';
 import TechStackParticipant from '@/components/participant/activities/TechStackParticipant';
-import BuildYourBotParticipant from '@/components/participant/activities/BuildYourBotParticipant';
+import BottleneckAnalystParticipant from '@/components/participant/activities/BottleneckAnalystParticipant';
 import { motion } from 'framer-motion';
 
 export default function ParticipantPage() {
@@ -49,8 +49,8 @@ export default function ParticipantPage() {
               {activity === 'techStack' && (
                 <TechStackParticipant config={(sessionState.activityConfig || {}) as { scenarioId?: string }} />
               )}
-              {activity === 'buildYourBot' && (
-                <BuildYourBotParticipant />
+              {activity === 'bottleneck' && (
+                <BottleneckAnalystParticipant config={(sessionState.activityConfig || {}) as { scenarioId?: string }} />
               )}
             </div>
           </div>

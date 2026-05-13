@@ -6,18 +6,18 @@ import { MYTHS, STACK_SCENARIOS } from '@/lib/data';
 import MythBusterPresenter from './activities/MythBusterPresenter';
 import DesignCardPresenter from './activities/DesignCardPresenter';
 import TechStackPresenter from './activities/TechStackPresenter';
-import BuildYourBotPresenter from './activities/BuildYourBotPresenter';
+import BottleneckAnalystPresenter from './activities/BottleneckAnalystPresenter';
 import LiveCounter from '@/components/shared/LiveCounter';
 
 import AtelierBackground from '@/components/shared/AtelierBackground';
 
-type ActivityId = 'mythBuster' | 'designCard' | 'techStack' | 'buildYourBot';
+type ActivityId = 'mythBuster' | 'designCard' | 'techStack' | 'bottleneck';
 
 const ACTIVITIES = [
   { id: 'mythBuster' as ActivityId,   label: 'Myth Buster',    emoji: '💥', desc: '60 sec · MYTH or FACT' },
   { id: 'designCard' as ActivityId,   label: 'Design Card',    emoji: '🎴', desc: '5 min · Smart object' },
   { id: 'techStack' as ActivityId,    label: 'Tech Stack',     emoji: '🔗', desc: '5 min · Pick 3 techs' },
-  { id: 'buildYourBot' as ActivityId, label: 'Build Your Bot', emoji: '🤖', desc: '4 min · Design a robot' },
+  { id: 'bottleneck' as ActivityId,   label: 'System Diagnosis', emoji: '🔍', desc: '4 min · Fix bottleneck' },
 ];
 
 export default function PresenterDashboard() {
@@ -279,9 +279,13 @@ export default function PresenterDashboard() {
                   responses={sessionState.responses as any}
                 />
               </motion.div>
-            ) : sessionState.currentActivity === 'buildYourBot' ? (
-              <motion.div key="bot" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="h-full">
-                <BuildYourBotPresenter participantCount={sessionState.participantCount || 0} responses={sessionState.responses as any} />
+            ) : sessionState.currentActivity === 'bottleneck' ? (
+              <motion.div key="bottleneck" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="h-full">
+                <BottleneckAnalystPresenter 
+                  participantCount={sessionState.participantCount || 0} 
+                  responses={sessionState.responses as any} 
+                  config={sessionState.activityConfig as any} 
+                />
               </motion.div>
             ) : null}
           </AnimatePresence>

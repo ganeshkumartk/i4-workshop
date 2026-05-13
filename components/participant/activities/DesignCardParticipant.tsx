@@ -79,7 +79,7 @@ export default function DesignCardParticipant({ assignments, socketId }: Props) 
               {LAYERS.map(layer => (
                 <div key={layer.key} className="space-y-3">
                   <div className="flex flex-col gap-1">
-                    <label className="flex items-center gap-2 text-[10px] uppercase tracking-[0.1em] font-bold" style={{ color: layer.color }}>
+                    <label className="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold" style={{ color: layer.color }}>
                       <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: layer.color }} />
                       <span className="shrink-0">{layer.label}</span>
                     </label>
@@ -96,7 +96,7 @@ export default function DesignCardParticipant({ assignments, socketId }: Props) 
                           const newVal = current.includes(s) ? current.replace(s, '').replace(/^ - | - $/g, '').trim() : s;
                           setFields(f => ({ ...f, [layer.key]: newVal }));
                         }}
-                        className={`text-[9px] uppercase tracking-[0.1em] px-2.5 py-1.5 border transition-all ${
+                        className={`text-[9px] uppercase tracking-widest px-2.5 py-1.5 border transition-all ${
                           fields[layer.key as keyof typeof fields].includes(s)
                             ? 'bg-[#1C1C1C] text-white border-[#1C1C1C]'
                             : 'bg-white text-[#6B6560] border-[#D4CFC8] hover:border-[#1C1C1C] hover:text-[#1C1C1C]'
@@ -121,7 +121,7 @@ export default function DesignCardParticipant({ assignments, socketId }: Props) 
               ))}
 
               <div className="pt-4 border-t border-[#E8E4DF]">
-                <label className="text-[10px] uppercase tracking-[0.1em] font-bold text-[#1C1C1C] mb-2 block">Product name (optional)</label>
+                <label className="text-[10px] uppercase tracking-widest font-bold text-[#1C1C1C] mb-2 block">Product name (optional)</label>
                 <input
                   type="text"
                   maxLength={20}
@@ -158,7 +158,7 @@ export default function DesignCardParticipant({ assignments, socketId }: Props) 
               </div>
               {LAYERS.map(l => (
                 <div key={l.key} className="flex gap-3 sm:gap-4 items-start">
-                  <span className="font-bold text-[9px] sm:text-[10px] uppercase tracking-[0.1em] w-14 sm:w-16 shrink-0 mt-1 sm:mt-0.5" style={{ color: l.color }}>{l.label}</span>
+                  <span className="font-bold text-[9px] sm:text-[10px] uppercase tracking-widest w-14 sm:w-16 shrink-0 mt-1 sm:mt-0.5" style={{ color: l.color }}>{l.label}</span>
                   <span className="text-[#1C1C1C] text-sm sm:text-base font-medium">{fields[l.key as keyof typeof fields]}</span>
                 </div>
               ))}

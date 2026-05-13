@@ -62,7 +62,7 @@ export default function TechStackParticipant({ config }: Props) {
                     }`}
                   >
                     <span className={`text-xl sm:text-2xl transition-all duration-500 ${selected ? 'scale-110' : 'grayscale opacity-90'}`}>{tech.emoji}</span>
-                    <span className={`text-[8px] sm:text-[9px] font-bold uppercase tracking-[0.1em] text-center leading-tight ${selected ? 'text-white' : 'text-[#1C1C1C]'}`}>{tech.label}</span>
+                    <span className={`text-[8px] sm:text-[9px] font-bold uppercase tracking-widesttext-center leading-tight ${selected ? 'text-white' : 'text-[#1C1C1C]'}`}>{tech.label}</span>
                   </button>
                 );
               })}
@@ -98,7 +98,7 @@ export default function TechStackParticipant({ config }: Props) {
                     className="flex flex-col items-center gap-2 sm:gap-3 bg-white border border-[#D4CFC8] p-3 sm:p-4 w-20 sm:w-24 shadow-sm"
                   >
                     <span className="text-2xl sm:text-3xl">{t.emoji}</span>
-                    <span className="text-[8px] sm:text-[9px] font-bold uppercase tracking-[0.1em] text-[#1C1C1C] text-center leading-tight">{t.label.split(' ')[0]}</span>
+                    <span className="text-[8px] sm:text-[9px] font-bold uppercase tracking-widest text-[#1C1C1C] text-center leading-tight">{t.label.split(' ')[0]}</span>
                   </motion.div>
                 );
               })}

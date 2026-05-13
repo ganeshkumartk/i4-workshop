@@ -51,39 +51,16 @@ export const STACK_SCENARIOS = [
   { id: 's4', text: 'A delivery startup wants to build the perfect warehouse — 3 technologies, go.' },
 ];
 
-export const BOT_BODIES = [
-  { id: 'wheeled',   label: 'AGV Platform',    emoji: '🛞' },
-  { id: 'arm',       label: 'Articulated Arm', emoji: '🦾' },
-  { id: 'humanoid',  label: 'Bipedal Agent',   emoji: '🧑‍🤖' },
-  { id: 'drone',     label: 'Aerial Drone',    emoji: '🚁' },
-  { id: 'box',       label: 'Smart Node',      emoji: '📦' },
-  { id: 'wearable',  label: 'Exoskeleton',     emoji: '🦿' },
+export const BOTTLENECK_SCENARIOS = [
+  {
+    id: 'packaging',
+    title: 'The Packaging Jam',
+    description: 'Finished goods are piling up. The robotic arm is fast, but the manual inspection team cannot keep up with the volume. Boxes are overflowing the buffer zone.',
+    interventions: [
+      { id: 'ai_vision', label: 'AI Vision QA', emoji: '👁️', desc: 'Automate inspection with high-speed cameras' },
+      { id: 'cobot', label: 'Cobot Assistant', emoji: '🦾', desc: 'Deploy a collaborative robot to help pack' },
+      { id: 'digital_twin', label: 'Digital Twin', emoji: '🌐', desc: 'Simulate layout to find a better buffer strategy' },
+      { id: 'smart_conveyor', label: 'Smart Conveyor', emoji: '🛞', desc: 'Variable speed routing based on QA load' }
+    ]
+  }
 ];
-
-export const BOT_SUPERPOWERS = [
-  { id: 'temp',     label: 'Thermal Array',    emoji: '🌡️' },
-  { id: 'location', label: 'RTK Positioning',  emoji: '📍' },
-  { id: 'sound',    label: 'Acoustic Diag.',   emoji: '🎙️' },
-  { id: 'vision',   label: 'Machine Vision',   emoji: '👁️' },
-  { id: 'heart',    label: 'Biometrics',       emoji: '❤️' },
-  { id: 'air',      label: 'Spectrometer',     emoji: '🧪' },
-  { id: 'touch',    label: 'Haptic Sensor',    emoji: '🤝' },
-  { id: 'power',    label: 'Power Metrics',    emoji: '⚡' },
-];
-
-export const BOT_NAMES = [
-  'ARIA', 'BOLT', 'CIPHER', 'DROID', 'ECHO', 'FLUX', 'GIGA', 'HELIX',
-  'IRIS', 'JUNO', 'KILO', 'LUMEN', 'MACH', 'NOVA', 'ORBIT', 'PIXEL',
-  'QUBIT', 'RELAY', 'SIGMA', 'TERRA', 'ULTRA', 'VEGA', 'WARP', 'XENON',
-  'YIELD', 'ZETA',
-];
-
-let botNameIndex = 0;
-export function nextBotName() {
-  const name = BOT_NAMES[botNameIndex % BOT_NAMES.length];
-  botNameIndex++;
-  return name;
-}
-export function resetBotNames() {
-  botNameIndex = 0;
-}
