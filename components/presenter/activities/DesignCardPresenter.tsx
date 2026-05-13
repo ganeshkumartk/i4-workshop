@@ -103,6 +103,13 @@ function DesignCard({ card, large }: { card: Card; large?: boolean }) {
     deliver: '#8B4A34', // rust
   };
 
+  const LABELS: Record<string, string> = {
+    sense: 'Sensor',
+    report: 'Network',
+    decide: 'Compute',
+    deliver: 'Value',
+  };
+
   return (
     <div className={`bg-[#FFFFFF] border border-[#E8E4DF] ${size} ${large ? 'w-full shadow-2xl shadow-black/5' : 'w-64 hover:border-[#D4CFC8] hover:shadow-md transition-all duration-500'} space-y-6 relative overflow-hidden group`}>
       <div className="flex items-start gap-4">
@@ -122,10 +129,10 @@ function DesignCard({ card, large }: { card: Card; large?: boolean }) {
         {(['sense', 'report', 'decide', 'deliver'] as const).map(key => (
           <div key={key} className="flex gap-4 items-start">
             <span
-              className={`font-medium w-16 shrink-0 capitalize ${bodySize} tracking-widest`}
+              className={`font-medium w-16 shrink-0 uppercase ${bodySize} tracking-widest`}
               style={{ color: ATELIER_COLORS[key] }}
             >
-              {key}
+              {LABELS[key]}
             </span>
             <span className={`text-[#6B6560] leading-relaxed ${bodySize}`}>{card[key]}</span>
           </div>

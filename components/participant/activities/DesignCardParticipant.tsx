@@ -11,10 +11,34 @@ interface Props {
 }
 
 const LAYERS = [
-  { key: 'sense',   label: 'Sense',   desc: 'What does it measure?',     color: '#8B7D56' },
-  { key: 'report',  label: 'Report',  desc: 'Who gets the signal?',       color: '#4A5B69' },
-  { key: 'decide',  label: 'Decide',  desc: 'What changes as a result?',  color: '#7A8B76' },
-  { key: 'deliver', label: 'Deliver', desc: 'What value did you unlock?', color: '#8B4A34' },
+  { 
+    key: 'sense',   
+    label: 'Sensor Array',   
+    desc: 'What physical property is being measured?',     
+    color: '#8B7D56',
+    suggestions: ['Thermal (Heat)', 'Optical (Vision)', 'Acoustic (Sound)', 'Kinematic (Motion)', 'RFID (Presence)']
+  },
+  { 
+    key: 'report',  
+    label: 'Connectivity',  
+    desc: 'How does it transmit data?',       
+    color: '#4A5B69',
+    suggestions: ['5G / Cellular', 'LoRaWAN', 'Wi-Fi', 'Bluetooth Low Energy', 'Industrial Ethernet']
+  },
+  { 
+    key: 'decide',  
+    label: 'Intelligence',  
+    desc: 'Where is the data processed?',  
+    color: '#7A8B76',
+    suggestions: ['Cloud AI Analytics', 'Edge Computing', 'Local Microcontroller', 'Rule-based Logic']
+  },
+  { 
+    key: 'deliver', 
+    label: 'Value Output', 
+    desc: 'What is the business outcome?', 
+    color: '#8B4A34',
+    suggestions: ['Predictive Maintenance', 'Automated QA', 'Energy Optimization', 'Safety & Compliance']
+  },
 ];
 
 export default function DesignCardParticipant({ assignments, socketId }: Props) {
@@ -47,30 +71,56 @@ export default function DesignCardParticipant({ assignments, socketId }: Props) 
           >
             <div className="text-center py-2 space-y-2">
               <span className="text-3xl sm:text-4xl grayscale opacity-80">{assignment?.emoji}</span>
-              <p className="text-[#1C1C1C] font-serif text-xl sm:text-2xl font-medium tracking-tight">{assignment?.label}</p>
-              <p className="text-[#6B6560] font-bold text-[10px] uppercase tracking-[0.2em]">Complete the layers</p>
+              <p className="text-[#1C1C1C] font-serif text-xl sm:text-2xl font-medium tracking-tight">Smart {assignment?.label}</p>
+              <p className="text-[#6B6560] font-bold text-[10px] uppercase tracking-[0.2em]">Cyber-Physical Blueprint</p>
             </div>
 
-            <div className="space-y-4 sm:space-y-5">
+            <div className="space-y-6 sm:space-y-8">
               {LAYERS.map(layer => (
-                <div key={layer.key}>
-                  <label className="flex items-center gap-2 text-[10px] uppercase tracking-[0.1em] font-bold mb-2" style={{ color: layer.color }}>
-                    <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: layer.color }} />
-                    <span className="shrink-0">{layer.label}</span>
-                    <span className="text-[#6B6560] font-medium lowercase tracking-normal truncate">— {layer.desc}</span>
-                  </label>
-                  <input
-                    type="text"
-                    maxLength={30}
-                    placeholder={`e.g. ${layer.key === 'sense' ? 'temperature' : layer.key === 'report' ? 'your phone' : layer.key === 'decide' ? 'sends alert' : 'prevent spoilage'}`}
-                    value={fields[layer.key as keyof typeof fields]}
-                    onChange={e => setFields(f => ({ ...f, [layer.key]: e.target.value }))}
-                    className="w-full bg-white border border-[#D4CFC8] px-4 py-3 sm:py-4 text-[#1C1C1C] font-medium text-sm sm:text-base focus:outline-none focus:border-[#1C1C1C] focus:ring-1 focus:ring-[#1C1C1C] transition-all placeholder:text-[#A8A29E] placeholder:font-normal shadow-sm rounded-none"
-                  />
+                <div key={layer.key} className="space-y-3">
+                  <div className="flex flex-col gap-1">
+                    <label className="flex items-center gap-2 text-[10px] uppercase tracking-[0.1em] font-bold" style={{ color: layer.color }}>
+                      <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: layer.color }} />
+                      <span className="shrink-0">{layer.label}</span>
+                    </label>
+                    <span className="text-[#6B6560] text-xs font-medium pl-3.5 border-l border-[#E8E4DF] ml-0.5">{layer.desc}</span>
+                  </div>
+                  
+                  <div className="flex flex-wrap gap-2 pl-3.5 ml-0.5">
+                    {layer.suggestions.map(s => (
+                      <button
+                        key={s}
+                        onClick={() => {
+                          const current = fields[layer.key as keyof typeof fields];
+                          // If they click the suggestion, replace or append
+                          const newVal = current.includes(s) ? current.replace(s, '').replace(/^ - | - $/g, '').trim() : s;
+                          setFields(f => ({ ...f, [layer.key]: newVal }));
+                        }}
+                        className={`text-[9px] uppercase tracking-[0.1em] px-2.5 py-1.5 border transition-all ${
+                          fields[layer.key as keyof typeof fields].includes(s)
+                            ? 'bg-[#1C1C1C] text-white border-[#1C1C1C]'
+                            : 'bg-white text-[#6B6560] border-[#D4CFC8] hover:border-[#1C1C1C] hover:text-[#1C1C1C]'
+                        }`}
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="pl-3.5 ml-0.5">
+                    <input
+                      type="text"
+                      maxLength={40}
+                      placeholder="Specific application / details..."
+                      value={fields[layer.key as keyof typeof fields]}
+                      onChange={e => setFields(f => ({ ...f, [layer.key]: e.target.value }))}
+                      className="w-full bg-white border border-[#D4CFC8] px-4 py-3 sm:py-4 text-[#1C1C1C] font-medium text-sm sm:text-base focus:outline-none focus:border-[#1C1C1C] focus:ring-1 focus:ring-[#1C1C1C] transition-all placeholder:text-[#A8A29E] placeholder:font-normal shadow-sm rounded-none"
+                    />
+                  </div>
                 </div>
               ))}
 
-              <div className="pt-2">
+              <div className="pt-4 border-t border-[#E8E4DF]">
                 <label className="text-[10px] uppercase tracking-[0.1em] font-bold text-[#1C1C1C] mb-2 block">Product name (optional)</label>
                 <input
                   type="text"
@@ -89,7 +139,7 @@ export default function DesignCardParticipant({ assignments, socketId }: Props) 
               className="w-full py-4 sm:py-5 mt-4 text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 disabled:opacity-50"
               style={{ background: valid ? '#1C1C1C' : '#D4CFC8', color: valid ? '#FFFFFF' : '#6B6560' }}
             >
-              Submit Design
+              Submit Blueprint
             </button>
           </motion.div>
         ) : (

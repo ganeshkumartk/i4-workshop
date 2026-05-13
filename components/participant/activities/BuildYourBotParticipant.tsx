@@ -32,14 +32,14 @@ export default function BuildYourBotParticipant() {
         {!submitted ? (
           <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }} className="space-y-6 sm:space-y-8 max-w-[500px] mx-auto w-full pb-4">
             <div className="text-center space-y-2">
-              <p className="text-[#1C1C1C] font-serif text-xl sm:text-2xl font-medium tracking-tight">Robot Assembly</p>
-              <p className="text-[#6B6560] font-bold text-[10px] uppercase tracking-[0.2em]">Configure 3 parameters to deploy</p>
+              <p className="text-[#1C1C1C] font-serif text-xl sm:text-2xl font-medium tracking-tight">Agent Deployment</p>
+              <p className="text-[#6B6560] font-bold text-[10px] uppercase tracking-[0.2em]">Configure Cyber-Physical System</p>
             </div>
 
             <div className="space-y-5 sm:space-y-6">
               {/* Body */}
               <div>
-                <p className="text-[10px] uppercase tracking-[0.1em] font-bold text-[#1C1C1C] mb-2 sm:mb-3">Core chassis</p>
+                <p className="text-[10px] uppercase tracking-[0.1em] font-bold text-[#1C1C1C] mb-2 sm:mb-3">Form Factor</p>
                 <div className="grid grid-cols-3 gap-2 sm:gap-3">
                   {BOT_BODIES.map(b => (
                     <button
@@ -58,7 +58,7 @@ export default function BuildYourBotParticipant() {
 
               {/* Superpower */}
               <div>
-                <p className="text-[10px] uppercase tracking-[0.1em] font-bold text-[#1C1C1C] mb-2 sm:mb-3">Sensory array</p>
+                <p className="text-[10px] uppercase tracking-[0.1em] font-bold text-[#1C1C1C] mb-2 sm:mb-3">Primary Telemetry</p>
                 <div className="grid grid-cols-4 gap-2">
                   {BOT_SUPERPOWERS.map(p => (
                     <button
@@ -77,11 +77,11 @@ export default function BuildYourBotParticipant() {
 
               {/* Job */}
               <div className="pt-2">
-                <p className="text-[10px] uppercase tracking-[0.1em] font-bold text-[#1C1C1C] mb-2 sm:mb-3">Primary directive</p>
+                <p className="text-[10px] uppercase tracking-[0.1em] font-bold text-[#1C1C1C] mb-2 sm:mb-3">Mission Objective</p>
                 <input
                   type="text"
                   maxLength={30}
-                  placeholder="e.g. measure machine temp"
+                  placeholder="e.g. Map warehouse floor"
                   value={job}
                   onChange={e => setJob(e.target.value)}
                   className="w-full bg-white border border-[#D4CFC8] px-4 py-3 sm:py-4 text-[#1C1C1C] font-medium text-sm sm:text-base focus:outline-none focus:border-[#1C1C1C] focus:ring-1 focus:ring-[#1C1C1C] transition-all placeholder:text-[#A8A29E] placeholder:font-normal shadow-sm rounded-none"

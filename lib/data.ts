@@ -52,23 +52,23 @@ export const STACK_SCENARIOS = [
 ];
 
 export const BOT_BODIES = [
-  { id: 'wheeled',   label: 'Wheeled',   emoji: '🛞' },
-  { id: 'arm',       label: 'Arm',       emoji: '🦾' },
-  { id: 'humanoid',  label: 'Humanoid',  emoji: '🧑‍🤖' },
-  { id: 'drone',     label: 'Drone',     emoji: '🚁' },
-  { id: 'box',       label: 'Smart Box', emoji: '📦' },
-  { id: 'wearable',  label: 'Wearable',  emoji: '⌚' },
+  { id: 'wheeled',   label: 'AGV Platform',    emoji: '🛞' },
+  { id: 'arm',       label: 'Articulated Arm', emoji: '🦾' },
+  { id: 'humanoid',  label: 'Bipedal Agent',   emoji: '🧑‍🤖' },
+  { id: 'drone',     label: 'Aerial Drone',    emoji: '🚁' },
+  { id: 'box',       label: 'Smart Node',      emoji: '📦' },
+  { id: 'wearable',  label: 'Exoskeleton',     emoji: '🦿' },
 ];
 
 export const BOT_SUPERPOWERS = [
-  { id: 'temp',     label: 'Temperature', emoji: '🌡️' },
-  { id: 'location', label: 'Location',    emoji: '📍' },
-  { id: 'sound',    label: 'Sound',       emoji: '🎙️' },
-  { id: 'vision',   label: 'Vision',      emoji: '👁️' },
-  { id: 'heart',    label: 'Heartbeat',   emoji: '❤️' },
-  { id: 'air',      label: 'Air Quality', emoji: '🧪' },
-  { id: 'touch',    label: 'Touch',       emoji: '🤝' },
-  { id: 'power',    label: 'Power',       emoji: '⚡' },
+  { id: 'temp',     label: 'Thermal Array',    emoji: '🌡️' },
+  { id: 'location', label: 'RTK Positioning',  emoji: '📍' },
+  { id: 'sound',    label: 'Acoustic Diag.',   emoji: '🎙️' },
+  { id: 'vision',   label: 'Machine Vision',   emoji: '👁️' },
+  { id: 'heart',    label: 'Biometrics',       emoji: '❤️' },
+  { id: 'air',      label: 'Spectrometer',     emoji: '🧪' },
+  { id: 'touch',    label: 'Haptic Sensor',    emoji: '🤝' },
+  { id: 'power',    label: 'Power Metrics',    emoji: '⚡' },
 ];
 
 export const BOT_NAMES = [
