@@ -54,10 +54,10 @@ export default function DesignCardParticipant({ assignments, socketId }: Props) 
             <div className="space-y-5">
               {LAYERS.map(layer => (
                 <div key={layer.key}>
-                  <label className="flex items-center gap-2 text-[10px] uppercase tracking-[0.1em] font-medium mb-2" style={{ color: layer.color }}>
-                    <span className="w-1 h-1 rounded-full" style={{ background: layer.color }} />
+                  <label className="flex items-center gap-2 text-[10px] uppercase tracking-[0.1em] font-bold mb-2" style={{ color: layer.color }}>
+                    <span className="w-1.5 h-1.5 rounded-full" style={{ background: layer.color }} />
                     {layer.label}
-                    <span className="text-[#8D8881] font-normal lowercase tracking-normal">— {layer.desc}</span>
+                    <span className="text-[#6B6560] font-medium lowercase tracking-normal">— {layer.desc}</span>
                   </label>
                   <input
                     type="text"
@@ -65,20 +65,20 @@ export default function DesignCardParticipant({ assignments, socketId }: Props) 
                     placeholder={`e.g. ${layer.key === 'sense' ? 'temperature' : layer.key === 'report' ? 'your phone' : layer.key === 'decide' ? 'sends alert' : 'prevent spoilage'}`}
                     value={fields[layer.key as keyof typeof fields]}
                     onChange={e => setFields(f => ({ ...f, [layer.key]: e.target.value }))}
-                    className="w-full bg-[#FFFFFF] border border-[#E8E4DF] px-4 py-3 text-[#1C1C1C] text-sm focus:outline-none focus:border-[#8B7D56] transition-colors placeholder:text-[#D4CFC8]"
+                    className="w-full bg-white border border-[#D4CFC8] px-4 py-3 text-[#1C1C1C] font-medium text-sm focus:outline-none focus:border-[#1C1C1C] focus:ring-1 focus:ring-[#1C1C1C] transition-all placeholder:text-[#A8A29E] placeholder:font-normal shadow-sm"
                   />
                 </div>
               ))}
 
               <div>
-                <label className="text-[10px] uppercase tracking-[0.1em] font-medium text-[#6B6560] mb-2 block">Product name (optional)</label>
+                <label className="text-[10px] uppercase tracking-[0.1em] font-bold text-[#1C1C1C] mb-2 block">Product name (optional)</label>
                 <input
                   type="text"
                   maxLength={20}
                   placeholder="e.g. SmartKey Pro"
                   value={fields.name}
                   onChange={e => setFields(f => ({ ...f, name: e.target.value }))}
-                  className="w-full bg-[#FFFFFF] border border-[#E8E4DF] px-4 py-3 text-[#1C1C1C] text-sm focus:outline-none focus:border-[#8B7D56] transition-colors placeholder:text-[#D4CFC8]"
+                  className="w-full bg-white border border-[#D4CFC8] px-4 py-3 text-[#1C1C1C] font-medium text-sm focus:outline-none focus:border-[#1C1C1C] focus:ring-1 focus:ring-[#1C1C1C] transition-all placeholder:text-[#A8A29E] placeholder:font-normal shadow-sm"
                 />
               </div>
             </div>
@@ -86,8 +86,8 @@ export default function DesignCardParticipant({ assignments, socketId }: Props) 
             <button
               onClick={submit}
               disabled={!valid}
-              className="w-full py-4 mt-4 text-xs tracking-[0.2em] uppercase transition-all duration-500 disabled:opacity-30 disabled:bg-[#E8E4DF] disabled:text-[#8D8881]"
-              style={{ background: valid ? '#1C1C1C' : '#E8E4DF', color: valid ? '#FFFFFF' : '#8D8881' }}
+              className="w-full py-4 mt-4 text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 disabled:opacity-50 disabled:bg-[#E8E4DF] disabled:text-[#8D8881]"
+              style={{ background: valid ? '#1C1C1C' : '#D4CFC8', color: valid ? '#FFFFFF' : '#6B6560' }}
             >
               Submit Design
             </button>

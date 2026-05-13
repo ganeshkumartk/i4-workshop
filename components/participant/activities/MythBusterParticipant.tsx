@@ -52,13 +52,13 @@ export default function MythBusterParticipant({ config }: Props) {
           >
             <button
               onClick={() => vote('MYTH')}
-              className="w-full h-20 bg-[#FFFFFF] border border-[#E8E4DF] text-[#8B4A34] text-sm uppercase tracking-[0.2em] transition-all duration-500 active:scale-95 hover:border-[#8B4A34]"
+              className="w-full h-20 bg-white border border-[#D4CFC8] text-[#8B4A34] text-sm font-bold uppercase tracking-[0.2em] transition-all duration-300 active:scale-95 hover:border-[#1C1C1C] hover:bg-[#F9F8F6] shadow-sm"
             >
               Myth
             </button>
             <button
               onClick={() => vote('FACT')}
-              className="w-full h-20 bg-[#FFFFFF] border border-[#E8E4DF] text-[#7A8B76] text-sm uppercase tracking-[0.2em] transition-all duration-500 active:scale-95 hover:border-[#7A8B76]"
+              className="w-full h-20 bg-white border border-[#D4CFC8] text-[#7A8B76] text-sm font-bold uppercase tracking-[0.2em] transition-all duration-300 active:scale-95 hover:border-[#1C1C1C] hover:bg-[#F9F8F6] shadow-sm"
             >
               Fact
             </button>

@@ -38,9 +38,9 @@ export default function TechStackParticipant({ config }: Props) {
             <div className="text-center space-y-3">
               <p className="text-[#6B6560] text-[10px] uppercase tracking-[0.2em]">Your challenge</p>
               <p className="text-lg font-serif font-light text-[#1C1C1C] leading-snug">{scenario.text}</p>
-              <p className="text-[#8D8881] text-[10px] uppercase tracking-widest mt-2">
+              <p className="text-[#1C1C1C] text-[10px] uppercase tracking-[0.2em] font-bold mt-2">
                 Pick <span className="text-[#1C1C1C] font-bold">3</span> technologies
-                <span className="ml-2 text-[#8B7D56]">{picks.length}/3 selected</span>
+                <span className="ml-2 text-[#8B7D56] font-medium">{picks.length}/3 selected</span>
               </p>
             </div>
 
@@ -53,16 +53,16 @@ export default function TechStackParticipant({ config }: Props) {
                     key={tech.id}
                     onClick={() => toggle(tech.id)}
                     disabled={maxed}
-                    className={`flex flex-col items-center gap-3 p-4 border transition-all duration-500 ${
+                    className={`flex flex-col items-center gap-3 p-4 border transition-all duration-300 ${
                       selected
                         ? 'border-[#1C1C1C] bg-[#1C1C1C] text-white shadow-md'
                         : maxed
-                        ? 'border-[#E8E4DF] bg-transparent opacity-30'
-                        : 'border-[#E8E4DF] bg-[#FFFFFF] hover:border-[#D4CFC8] text-[#1C1C1C]'
+                        ? 'border-[#D4CFC8] bg-transparent opacity-40'
+                        : 'border-[#D4CFC8] bg-white hover:border-[#1C1C1C] hover:bg-[#F9F8F6] text-[#1C1C1C] shadow-sm'
                     }`}
                   >
-                    <span className={`text-2xl transition-all duration-500 ${selected ? 'scale-110' : 'grayscale opacity-70'}`}>{tech.emoji}</span>
-                    <span className={`text-[9px] uppercase tracking-[0.1em] text-center leading-tight ${selected ? 'text-white' : 'text-[#6B6560]'}`}>{tech.label}</span>
+                    <span className={`text-2xl transition-all duration-500 ${selected ? 'scale-110' : 'grayscale opacity-90'}`}>{tech.emoji}</span>
+                    <span className={`text-[9px] font-bold uppercase tracking-[0.1em] text-center leading-tight ${selected ? 'text-white' : 'text-[#1C1C1C]'}`}>{tech.label}</span>
                   </button>
                 );
               })}
@@ -71,8 +71,8 @@ export default function TechStackParticipant({ config }: Props) {
             <button
               onClick={submit}
               disabled={picks.length !== 3}
-              className="w-full py-4 text-xs tracking-[0.2em] uppercase transition-all duration-500 disabled:opacity-30 disabled:bg-[#E8E4DF] disabled:text-[#8D8881]"
-              style={{ background: picks.length === 3 ? '#1C1C1C' : '#E8E4DF', color: picks.length === 3 ? '#FFFFFF' : '#8D8881' }}
+              className="w-full py-4 text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 disabled:opacity-50"
+              style={{ background: picks.length === 3 ? '#1C1C1C' : '#D4CFC8', color: picks.length === 3 ? '#FFFFFF' : '#6B6560' }}
             >
               Lock Selection
             </button>

@@ -48,15 +48,15 @@ export default function JoinScreen({ onJoined, participantCount }: Props) {
           onChange={e => setName(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && join()}
           autoFocus
-          className="w-full bg-[#FFFFFF] border border-[#E8E4DF] px-5 py-4 text-[#1C1C1C] text-sm font-sans focus:outline-none focus:border-[#8B7D56] text-center transition-colors placeholder:text-[#8D8881] placeholder:uppercase placeholder:tracking-widest placeholder:text-[10px]"
+          className="w-full bg-white border border-[#D4CFC8] px-5 py-4 text-[#1C1C1C] font-medium text-sm focus:outline-none focus:border-[#1C1C1C] focus:ring-1 focus:ring-[#1C1C1C] text-center transition-all placeholder:text-[#A8A29E] placeholder:uppercase placeholder:tracking-[0.1em] placeholder:text-[10px] shadow-sm"
         />
         <button
           onClick={join}
           disabled={!name.trim()}
-          className="w-full py-4 text-xs tracking-[0.2em] uppercase transition-all duration-500 disabled:opacity-30 disabled:bg-[#E8E4DF] disabled:text-[#8D8881]"
+          className="w-full py-4 text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 disabled:opacity-50"
           style={{
-            background: name.trim() ? '#1C1C1C' : '#E8E4DF',
-            color: name.trim() ? '#FFFFFF' : '#8D8881',
+            background: name.trim() ? '#1C1C1C' : '#D4CFC8',
+            color: name.trim() ? '#FFFFFF' : '#6B6560',
           }}
         >
           Enter
