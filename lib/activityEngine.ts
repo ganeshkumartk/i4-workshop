@@ -1,5 +1,5 @@
 import { SessionState } from './store';
-import { DESIGN_OBJECTS, STACK_SCENARIOS, BOT_NAMES } from './data';
+import { DESIGN_OBJECTS, STACK_SCENARIOS } from './data';
 
 const PRESENTER_PIN = process.env.PRESENTER_PIN || '1234';
 
@@ -66,12 +66,6 @@ export function handleParticipantResponseSync(
   const participant = state.participants[socketId];
   const responseData: any = { ...(data as Record<string, unknown>), participantName: participant?.name };
 
-  // For buildYourBot, generate bot name server-side
-  if (activityId === 'buildYourBot') {
-    responseData.botName = BOT_NAMES[state.botNameCounter % BOT_NAMES.length];
-    state.botNameCounter++;
-  }
-
   state.responses[socketId] = responseData;
 }
 
@@ -113,8 +107,8 @@ function computeResults(state: SessionState) {
       return { techCounts, coOccurrence, total: responses.length };
     }
 
-    case 'buildYourBot': {
-      return { bots: responses };
+    case 'bottleneck': {
+      return { diagnoses: responses };
     }
 
     default:

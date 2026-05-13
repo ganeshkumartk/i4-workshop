@@ -1,6 +1,6 @@
 import { Redis } from '@upstash/redis';
 
-export type ActivityId = 'mythBuster' | 'designCard' | 'techStack' | 'buildYourBot';
+export type ActivityId = 'mythBuster' | 'designCard' | 'techStack' | 'bottleneck';
 export type Phase = 'lobby' | 'active' | 'reveal' | 'discuss';
 
 export interface Participant {
