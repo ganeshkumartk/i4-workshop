@@ -122,7 +122,7 @@ function DesignCard({ card, large }: { card: Card; large?: boolean }) {
         {(['sense', 'report', 'decide', 'deliver'] as const).map(key => (
           <div key={key} className="flex gap-4 items-start">
             <span
-              className={`font-medium w-16 shrink-0 capitalize ${bodySize} tracking-[0.1em]`}
+              className={`font-medium w-16 shrink-0 capitalize ${bodySize} tracking-widest`}
               style={{ color: ATELIER_COLORS[key] }}
             >
               {key}

@@ -31,20 +31,20 @@ export default function TechStackParticipant({ config }: Props) {
   }
 
   return (
-    <div className="flex flex-col h-full px-4 py-6 overflow-y-auto">
+    <div className="flex flex-col h-full px-6 py-8 overflow-y-auto bg-[#F9F8F6] font-sans">
       <AnimatePresence mode="wait">
         {!submitted ? (
-          <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-            <div className="text-center">
-              <p className="text-xs uppercase tracking-widest text-white/40 mb-2">Your challenge</p>
-              <p className="text-base font-semibold text-white leading-snug">{scenario.text}</p>
-              <p className="text-white/40 text-xs mt-2">
-                Pick <span className="text-[#BEF264] font-bold">3 technologies</span> — choose wisely.
-                <span className="ml-2 text-white/60">{picks.length}/3 selected</span>
+          <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }} className="space-y-8">
+            <div className="text-center space-y-3">
+              <p className="text-[#6B6560] text-[10px] uppercase tracking-[0.2em]">Your challenge</p>
+              <p className="text-lg font-serif font-light text-[#1C1C1C] leading-snug">{scenario.text}</p>
+              <p className="text-[#8D8881] text-[10px] uppercase tracking-widest mt-2">
+                Pick <span className="text-[#1C1C1C] font-bold">3</span> technologies
+                <span className="ml-2 text-[#8B7D56]">{picks.length}/3 selected</span>
               </p>
             </div>
 
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-3">
               {TECHNOLOGIES.map(tech => {
                 const selected = picks.includes(tech.id);
                 const maxed = picks.length >= 3 && !selected;
@@ -53,17 +53,16 @@ export default function TechStackParticipant({ config }: Props) {
                     key={tech.id}
                     onClick={() => toggle(tech.id)}
                     disabled={maxed}
-                    className={`flex flex-col items-center gap-1 p-3 rounded-xl border-2 transition-all active:scale-95 ${
+                    className={`flex flex-col items-center gap-3 p-4 border transition-all duration-500 ${
                       selected
-                        ? 'border-[#BEF264] bg-[#BEF264]/10'
+                        ? 'border-[#1C1C1C] bg-[#1C1C1C] text-white shadow-md'
                         : maxed
-                        ? 'border-[#2a2a2a] opacity-30'
-                        : 'border-[#2a2a2a] hover:border-white/40'
+                        ? 'border-[#E8E4DF] bg-transparent opacity-30'
+                        : 'border-[#E8E4DF] bg-[#FFFFFF] hover:border-[#D4CFC8] text-[#1C1C1C]'
                     }`}
                   >
-                    <span className="text-2xl">{tech.emoji}</span>
-                    <span className="text-[10px] text-center leading-tight text-white/70">{tech.label}</span>
-                    {selected && <span className="text-[#BEF264] text-xs">✓</span>}
+                    <span className={`text-2xl transition-all duration-500 ${selected ? 'scale-110' : 'grayscale opacity-70'}`}>{tech.emoji}</span>
+                    <span className={`text-[9px] uppercase tracking-[0.1em] text-center leading-tight ${selected ? 'text-white' : 'text-[#6B6560]'}`}>{tech.label}</span>
                   </button>
                 );
               })}
@@ -72,33 +71,39 @@ export default function TechStackParticipant({ config }: Props) {
             <button
               onClick={submit}
               disabled={picks.length !== 3}
-              className="w-full h-14 rounded-2xl font-bold text-lg transition-all disabled:opacity-30"
-              style={{ background: picks.length === 3 ? '#BEF264' : '#2a2a2a', color: picks.length === 3 ? '#0B0B0B' : 'white' }}
+              className="w-full py-4 text-xs tracking-[0.2em] uppercase transition-all duration-500 disabled:opacity-30 disabled:bg-[#E8E4DF] disabled:text-[#8D8881]"
+              style={{ background: picks.length === 3 ? '#1C1C1C' : '#E8E4DF', color: picks.length === 3 ? '#FFFFFF' : '#8D8881' }}
             >
-              Lock in my stack 🔒
+              Lock Selection
             </button>
           </motion.div>
         ) : (
           <motion.div
             key="done"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="flex flex-col items-center justify-center h-full gap-5"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1.0] }}
+            className="flex flex-col items-center justify-center h-full gap-8"
           >
-            <span className="text-5xl">🔗</span>
-            <p className="text-xl font-bold text-[#BEF264]">Stack locked in!</p>
-            <div className="flex gap-3">
-              {picks.map(id => {
+            <p className="text-[#8B7D56] text-[10px] uppercase tracking-[0.2em]">Selection Confirmed</p>
+            <div className="flex gap-4">
+              {picks.map((id, i) => {
                 const t = TECHNOLOGIES.find(t => t.id === id)!;
                 return (
-                  <div key={id} className="flex flex-col items-center gap-1 bg-[#161616] rounded-xl p-3">
+                  <motion.div 
+                    key={id} 
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: i * 0.15, duration: 0.6 }}
+                    className="flex flex-col items-center gap-3 bg-[#FFFFFF] border border-[#E8E4DF] p-4 w-24"
+                  >
                     <span className="text-3xl">{t.emoji}</span>
-                    <span className="text-xs text-white/60 text-center leading-tight">{t.label.split(' ')[0]}</span>
-                  </div>
+                    <span className="text-[9px] uppercase tracking-[0.1em] text-[#6B6560] text-center leading-tight">{t.label.split(' ')[0]}</span>
+                  </motion.div>
                 );
               })}
             </div>
-            <p className="text-white/40 text-sm">Watch the constellation form!</p>
+            <p className="text-[#1C1C1C] font-serif text-lg mt-4">Watch the constellation form</p>
           </motion.div>
         )}
       </AnimatePresence>

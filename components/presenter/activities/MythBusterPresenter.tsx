@@ -72,7 +72,7 @@ export default function MythBusterPresenter({ config, participantCount, response
         <div className="w-full max-w-3xl space-y-8">
           {/* MYTH bar */}
           <div className="flex items-center gap-6">
-            <span className="text-[#8B4A34] font-medium tracking-[0.1em] w-24 text-right text-xs uppercase">Myth</span>
+            <span className="text-[#8B4A34] font-medium tracking-widest w-24 text-right text-xs uppercase">Myth</span>
             <div className="flex-1 h-1 bg-[#E8E4DF] relative">
               <motion.div
                 className="absolute inset-y-0 left-0 bg-[#8B4A34]"
@@ -94,7 +94,7 @@ export default function MythBusterPresenter({ config, participantCount, response
 
           {/* FACT bar */}
           <div className="flex items-center gap-6">
-            <span className="text-[#7A8B76] font-medium tracking-[0.1em] w-24 text-right text-xs uppercase">Fact</span>
+            <span className="text-[#7A8B76] font-medium tracking-widest w-24 text-right text-xs uppercase">Fact</span>
             <div className="flex-1 h-1 bg-[#E8E4DF] relative">
               <motion.div
                 className="absolute inset-y-0 left-0 bg-[#7A8B76]"

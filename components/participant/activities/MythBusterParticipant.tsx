@@ -27,15 +27,16 @@ export default function MythBusterParticipant({ config }: Props) {
   }
 
   return (
-    <div className="flex flex-col h-full items-center justify-center px-6 gap-8">
+    <div className="flex flex-col h-full items-center justify-center px-8 gap-12 font-sans bg-[#F9F8F6]">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1.0] }}
         className="text-center"
       >
-        <p className="text-xs uppercase tracking-widest text-white/40 mb-3">Round {(config?.mythIndex ?? 0) + 1} of 4</p>
-        <p className="text-xl font-semibold leading-snug text-white max-w-xs">
-          {myth?.statement}
+        <p className="text-[#6B6560] text-[10px] uppercase tracking-[0.2em] mb-4">Statement {(config?.mythIndex ?? 0) + 1} of 4</p>
+        <p className="text-2xl font-serif font-light leading-relaxed text-[#1C1C1C] max-w-xs">
+          &ldquo;{myth?.statement}&rdquo;
         </p>
       </motion.div>
 
@@ -43,34 +44,37 @@ export default function MythBusterParticipant({ config }: Props) {
         {!voted ? (
           <motion.div
             key="buttons"
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1.0] }}
             className="flex flex-col gap-4 w-full max-w-xs"
           >
             <button
               onClick={() => vote('MYTH')}
-              className="w-full h-24 rounded-2xl bg-red-500 hover:bg-red-400 active:scale-95 text-white font-bold text-3xl transition-all"
+              className="w-full h-20 bg-[#FFFFFF] border border-[#E8E4DF] text-[#8B4A34] text-sm uppercase tracking-[0.2em] transition-all duration-500 active:scale-95 hover:border-[#8B4A34]"
             >
-              💥 MYTH
+              Myth
             </button>
             <button
               onClick={() => vote('FACT')}
-              className="w-full h-24 rounded-2xl bg-[#16A34A] hover:bg-green-500 active:scale-95 text-white font-bold text-3xl transition-all"
+              className="w-full h-20 bg-[#FFFFFF] border border-[#E8E4DF] text-[#7A8B76] text-sm uppercase tracking-[0.2em] transition-all duration-500 active:scale-95 hover:border-[#7A8B76]"
             >
-              ✅ FACT
+              Fact
             </button>
           </motion.div>
         ) : (
           <motion.div
             key="voted"
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="text-center space-y-3"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1.0] }}
+            className="text-center space-y-4"
           >
-            <div className="text-6xl">{voted === 'MYTH' ? '💥' : '✅'}</div>
-            <p className="text-2xl font-bold text-[#BEF264]">You said: {voted}</p>
-            <p className="text-white/50 text-sm">Waiting for the reveal...</p>
+            <p className={`text-[10px] uppercase tracking-[0.2em] ${voted === 'MYTH' ? 'text-[#8B4A34]' : 'text-[#7A8B76]'}`}>
+              {voted} recorded
+            </p>
+            <p className="text-[#1C1C1C] font-serif text-lg">Awaiting reveal</p>
           </motion.div>
         )}
       </AnimatePresence>

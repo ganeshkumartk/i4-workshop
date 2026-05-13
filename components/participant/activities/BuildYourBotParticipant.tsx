@@ -27,103 +27,94 @@ export default function BuildYourBotParticipant() {
   const selectedPower = BOT_SUPERPOWERS.find(p => p.id === superpower);
 
   return (
-    <div className="flex flex-col h-full px-5 py-6 overflow-y-auto">
+    <div className="flex flex-col h-full px-6 py-8 overflow-y-auto bg-[#F9F8F6] font-sans">
       <AnimatePresence mode="wait">
         {!submitted ? (
-          <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-5">
-            <div className="text-center">
-              <p className="text-white font-bold text-lg">Build your robot! 🤖</p>
-              <p className="text-white/40 text-xs mt-1">3 choices and your bot goes live on the big screen</p>
+          <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }} className="space-y-8">
+            <div className="text-center space-y-2">
+              <p className="text-[#1C1C1C] font-serif text-xl tracking-tight">Robot Assembly</p>
+              <p className="text-[#6B6560] text-[10px] uppercase tracking-[0.2em]">Configure 3 parameters to deploy</p>
             </div>
 
-            {/* Body */}
-            <div>
-              <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">Body Type</p>
-              <div className="grid grid-cols-3 gap-2">
-                {BOT_BODIES.map(b => (
-                  <button
-                    key={b.id}
-                    onClick={() => setBody(b.id)}
-                    className={`flex flex-col items-center gap-1 p-3 rounded-xl border-2 transition-all active:scale-95 ${
-                      body === b.id ? 'border-[#16A34A] bg-[#16A34A]/10' : 'border-[#2a2a2a]'
-                    }`}
-                  >
-                    <span className="text-2xl">{b.emoji}</span>
-                    <span className="text-[10px] text-white/60">{b.label}</span>
-                  </button>
-                ))}
+            <div className="space-y-6">
+              {/* Body */}
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.1em] font-medium text-[#6B6560] mb-3">Core chassis</p>
+                <div className="grid grid-cols-3 gap-3">
+                  {BOT_BODIES.map(b => (
+                    <button
+                      key={b.id}
+                      onClick={() => setBody(b.id)}
+                      className={`flex flex-col items-center gap-2 p-4 border transition-all duration-500 ${
+                        body === b.id ? 'border-[#1C1C1C] bg-[#1C1C1C] text-white shadow-md' : 'border-[#E8E4DF] bg-[#FFFFFF] hover:border-[#D4CFC8] text-[#1C1C1C]'
+                      }`}
+                    >
+                      <span className={`text-3xl transition-all duration-500 ${body === b.id ? 'scale-110' : 'grayscale opacity-80'}`}>{b.emoji}</span>
+                      <span className={`text-[9px] uppercase tracking-[0.1em] ${body === b.id ? 'text-white' : 'text-[#6B6560]'}`}>{b.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Superpower */}
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.1em] font-medium text-[#6B6560] mb-3">Sensory array</p>
+                <div className="grid grid-cols-4 gap-2">
+                  {BOT_SUPERPOWERS.map(p => (
+                    <button
+                      key={p.id}
+                      onClick={() => setSuperpower(p.id)}
+                      className={`flex flex-col items-center gap-2 p-3 border transition-all duration-500 ${
+                        superpower === p.id ? 'border-[#1C1C1C] bg-[#1C1C1C] text-white shadow-md' : 'border-[#E8E4DF] bg-[#FFFFFF] hover:border-[#D4CFC8] text-[#1C1C1C]'
+                      }`}
+                    >
+                      <span className={`text-2xl transition-all duration-500 ${superpower === p.id ? 'scale-110' : 'grayscale opacity-80'}`}>{p.emoji}</span>
+                      <span className={`text-[8px] uppercase tracking-[0.1em] text-center leading-tight ${superpower === p.id ? 'text-white' : 'text-[#6B6560]'}`}>{p.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Job */}
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.1em] font-medium text-[#6B6560] mb-3">Primary directive</p>
+                <input
+                  type="text"
+                  maxLength={30}
+                  placeholder="e.g. measure machine temp"
+                  value={job}
+                  onChange={e => setJob(e.target.value)}
+                  className="w-full bg-[#FFFFFF] border border-[#E8E4DF] px-4 py-3 text-[#1C1C1C] text-sm focus:outline-none focus:border-[#8B7D56] transition-colors placeholder:text-[#D4CFC8]"
+                />
               </div>
             </div>
-
-            {/* Superpower */}
-            <div>
-              <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">Superpower (what it senses)</p>
-              <div className="grid grid-cols-4 gap-2">
-                {BOT_SUPERPOWERS.map(p => (
-                  <button
-                    key={p.id}
-                    onClick={() => setSuperpower(p.id)}
-                    className={`flex flex-col items-center gap-1 p-2.5 rounded-xl border-2 transition-all active:scale-95 ${
-                      superpower === p.id ? 'border-[#BEF264] bg-[#BEF264]/10' : 'border-[#2a2a2a]'
-                    }`}
-                  >
-                    <span className="text-xl">{p.emoji}</span>
-                    <span className="text-[9px] text-white/50 text-center leading-tight">{p.label}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Job */}
-            <div>
-              <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">This bot&apos;s job is to…</p>
-              <input
-                type="text"
-                maxLength={30}
-                placeholder="eg. keep coffee warm forever"
-                value={job}
-                onChange={e => setJob(e.target.value)}
-                className="w-full bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-[#BEF264] transition-colors"
-              />
-            </div>
-
-            {/* Preview pill */}
-            {body && superpower && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="flex items-center gap-3 bg-[#161616] rounded-xl px-4 py-3"
-              >
-                <span className="text-2xl">{selectedBody?.emoji}</span>
-                <span className="text-lg">+</span>
-                <span className="text-2xl">{selectedPower?.emoji}</span>
-                <span className="text-white/50 text-sm ml-1">{job || '...'}</span>
-              </motion.div>
-            )}
 
             <button
               onClick={submit}
               disabled={!valid}
-              className="w-full h-14 rounded-2xl font-bold text-lg transition-all disabled:opacity-30"
-              style={{ background: valid ? '#BEF264' : '#2a2a2a', color: valid ? '#0B0B0B' : 'white' }}
+              className="w-full py-4 text-xs tracking-[0.2em] uppercase transition-all duration-500 disabled:opacity-30 disabled:bg-[#E8E4DF] disabled:text-[#8D8881]"
+              style={{ background: valid ? '#1C1C1C' : '#E8E4DF', color: valid ? '#FFFFFF' : '#8D8881' }}
             >
-              Deploy my bot! 🚀
+              Deploy
             </button>
           </motion.div>
         ) : (
           <motion.div
             key="done"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="flex flex-col items-center justify-center h-full gap-5 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1.0] }}
+            className="flex flex-col items-center justify-center h-full gap-8 text-center"
           >
-            <div className="relative">
-              <span className="text-7xl">{selectedBody?.emoji}</span>
-              <span className="absolute -bottom-1 -right-1 text-3xl">{selectedPower?.emoji}</span>
+            <div className="relative p-6 bg-[#FFFFFF] border border-[#E8E4DF] rounded-sm shadow-sm">
+              <span className="text-7xl grayscale opacity-80">{selectedBody?.emoji}</span>
+              <span className="absolute -bottom-2 -right-2 text-4xl grayscale opacity-90">{selectedPower?.emoji}</span>
             </div>
-            <p className="text-2xl font-bold text-[#BEF264]">Bot deployed!</p>
-            <p className="text-white/60 text-sm max-w-[200px]">{job}</p>
-            <p className="text-white/30 text-xs">Your bot is joining the team roster on screen!</p>
+            <div className="space-y-3">
+              <p className="text-[#8B7D56] text-[10px] uppercase tracking-[0.2em]">Deployment successful</p>
+              <p className="text-[#1C1C1C] font-serif text-lg max-w-[200px] leading-snug mx-auto">{job}</p>
+            </div>
+            <p className="text-[#8D8881] text-[10px] uppercase tracking-[0.2em]">Joining team roster on screen</p>
           </motion.div>
         )}
       </AnimatePresence>

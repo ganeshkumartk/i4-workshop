@@ -26,14 +26,14 @@ export default function ParticipantPage() {
   const showWaiting = joined && (sessionState.phase === 'lobby' || sessionState.phase === 'discuss' || sessionState.phase === 'reveal');
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden bg-[#0B0B0B]">
+    <div className="h-screen flex flex-col overflow-hidden bg-[#F9F8F6] text-[#1C1C1C] font-sans selection:bg-[#E8E4DF]">
       {!joined ? (
         <JoinScreen onJoined={handleJoined} participantCount={sessionState.participantCount || 0} />
       ) : showActivity ? (
         <div className="flex flex-col h-full">
-          <div className="flex items-center justify-between px-5 py-3 border-b border-[#2a2a2a]">
-            <span className="text-white/50 text-sm font-medium">Hey, {myName} 👋</span>
-            <span className="text-white/30 text-xs">{sessionState.responseCount}/{sessionState.participantCount} responded</span>
+          <div className="flex items-center justify-between px-6 py-4 border-b border-[#E8E4DF] bg-transparent">
+            <span className="text-[#1C1C1C] font-serif text-sm">Guest: {myName}</span>
+            <span className="text-[#6B6560] text-[10px] uppercase tracking-[0.2em]">{sessionState.responseCount}/{sessionState.participantCount} responses</span>
           </div>
           <div className="flex-1 overflow-hidden">
             {activity === 'mythBuster' && (
@@ -57,28 +57,28 @@ export default function ParticipantPage() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="flex flex-col items-center justify-center h-full gap-4 text-center px-8"
+          transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1.0] }}
+          className="flex flex-col items-center justify-center h-full gap-6 text-center px-8"
         >
           {sessionState.phase === 'reveal' || sessionState.phase === 'discuss' ? (
             <>
-              <span className="text-5xl">🎉</span>
-              <p className="text-xl font-bold text-[#BEF264]">Results are in!</p>
-              <p className="text-white/40 text-sm">Watch the big screen</p>
+              <p className="text-[10px] uppercase tracking-[0.3em] text-[#8B7D56] mb-2">Conclusion</p>
+              <p className="text-3xl font-serif font-light text-[#1C1C1C]">Please direct your attention<br/>to the main screen</p>
             </>
           ) : (
             <>
-              <div className="flex gap-1">
+              <div className="flex gap-2 mb-4">
                 {[0, 1, 2].map(i => (
                   <motion.div
                     key={i}
-                    className="w-2 h-2 rounded-full bg-[#16A34A]"
-                    animate={{ scale: [1, 1.4, 1] }}
-                    transition={{ duration: 0.8, delay: i * 0.2, repeat: Infinity }}
+                    className="w-1.5 h-1.5 rounded-full bg-[#8B7D56]"
+                    animate={{ scale: [1, 1.5, 1], opacity: [0.3, 1, 0.3] }}
+                    transition={{ duration: 1.5, delay: i * 0.3, repeat: Infinity, ease: "easeInOut" }}
                   />
                 ))}
               </div>
-              <p className="text-white/50 text-lg font-medium">Waiting for the presenter…</p>
-              <p className="text-white/30 text-xs">{sessionState.participantCount} people in the room</p>
+              <p className="text-[#1C1C1C] font-serif text-2xl font-light">Awaiting presentation</p>
+              <p className="text-[#6B6560] text-[10px] uppercase tracking-[0.2em] mt-2">{sessionState.participantCount} guests present</p>
             </>
           )}
         </motion.div>
