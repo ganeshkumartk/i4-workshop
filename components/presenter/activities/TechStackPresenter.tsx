@@ -41,8 +41,8 @@ export default function TechStackPresenter({ config, participantCount, responses
   const positions = TECHNOLOGIES.map((_, i) => {
     const angle = (i / TECHNOLOGIES.length) * 2 * Math.PI - Math.PI / 2;
     return {
-      x: CX + RADIUS * Math.cos(angle),
-      y: CY + RADIUS * Math.sin(angle),
+      x: `calc(50% + ${RADIUS * Math.cos(angle)}px)`,
+      y: `calc(50% + ${RADIUS * Math.sin(angle)}px)`,
     };
   });
 
