@@ -20,17 +20,17 @@ export default function JoinScreen({ onJoined, participantCount }: Props) {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-full px-8 gap-12 bg-[#F9F8F6] text-[#1C1C1C] font-sans">
+    <div className="flex flex-col items-center justify-center h-full px-6 sm:px-8 gap-8 sm:gap-12 bg-[#F9F8F6] text-[#1C1C1C] font-sans pb-[env(safe-area-inset-bottom)]">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1.0] }}
-        className="text-center space-y-4"
+        className="text-center space-y-3 sm:space-y-4"
       >
-        <p className="text-[#6B6560] text-[10px] uppercase tracking-[0.3em]">D-CoE · IISc Workshop</p>
-        <h1 className="text-4xl font-serif font-light tracking-tight text-[#1C1C1C]">Industry 4.0</h1>
+        <p className="text-[#6B6560] font-bold text-[10px] uppercase tracking-[0.3em]">D-CoE · IISc Workshop</p>
+        <h1 className="text-3xl sm:text-4xl font-serif font-medium tracking-tight text-[#1C1C1C]">Industry 4.0</h1>
         {participantCount > 0 && (
-          <p className="text-[#8B7D56] text-[10px] uppercase tracking-widest mt-4">{participantCount} guests present</p>
+          <p className="text-[#8B7D56] font-bold text-[10px] uppercase tracking-widest mt-4">{participantCount} guests present</p>
         )}
       </motion.div>
 
@@ -38,7 +38,7 @@ export default function JoinScreen({ onJoined, participantCount }: Props) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.1, 0.25, 1.0] }}
-        className="w-full max-w-xs space-y-6"
+        className="w-full max-w-[280px] sm:max-w-xs space-y-4 sm:space-y-6"
       >
         <input
           type="text"
@@ -48,12 +48,12 @@ export default function JoinScreen({ onJoined, participantCount }: Props) {
           onChange={e => setName(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && join()}
           autoFocus
-          className="w-full bg-white border border-[#D4CFC8] px-5 py-4 text-[#1C1C1C] font-medium text-sm focus:outline-none focus:border-[#1C1C1C] focus:ring-1 focus:ring-[#1C1C1C] text-center transition-all placeholder:text-[#A8A29E] placeholder:uppercase placeholder:tracking-[0.1em] placeholder:text-[10px] shadow-sm"
+          className="w-full bg-white border border-[#D4CFC8] px-5 py-4 sm:py-5 text-[#1C1C1C] font-medium text-base focus:outline-none focus:border-[#1C1C1C] focus:ring-1 focus:ring-[#1C1C1C] text-center transition-all placeholder:text-[#A8A29E] placeholder:uppercase placeholder:tracking-widest placeholder:text-[10px] shadow-sm rounded-none"
         />
         <button
           onClick={join}
           disabled={!name.trim()}
-          className="w-full py-4 text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 disabled:opacity-50"
+          className="w-full py-4 sm:py-5 text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 disabled:opacity-50"
           style={{
             background: name.trim() ? '#1C1C1C' : '#D4CFC8',
             color: name.trim() ? '#FFFFFF' : '#6B6560',
@@ -63,7 +63,7 @@ export default function JoinScreen({ onJoined, participantCount }: Props) {
         </button>
       </motion.div>
 
-      <p className="text-[#8D8881] text-[10px] uppercase tracking-widest text-center absolute bottom-8">Scan the code on the main screen to enter</p>
+      <p className="text-[#8D8881] font-medium text-[10px] uppercase tracking-widest text-center absolute bottom-8 sm:bottom-12 px-6">Scan the code on the main screen to enter</p>
     </div>
   );
 }

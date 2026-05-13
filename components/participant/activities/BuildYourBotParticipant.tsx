@@ -27,30 +27,30 @@ export default function BuildYourBotParticipant() {
   const selectedPower = BOT_SUPERPOWERS.find(p => p.id === superpower);
 
   return (
-    <div className="flex flex-col h-full px-6 py-8 overflow-y-auto bg-[#F9F8F6] font-sans">
+    <div className="flex flex-col h-full px-4 sm:px-6 py-6 sm:py-8 overflow-y-auto bg-[#F9F8F6] font-sans pb-[env(safe-area-inset-bottom)]">
       <AnimatePresence mode="wait">
         {!submitted ? (
-          <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }} className="space-y-8">
+          <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }} className="space-y-6 sm:space-y-8 max-w-[500px] mx-auto w-full pb-4">
             <div className="text-center space-y-2">
-              <p className="text-[#1C1C1C] font-serif text-xl tracking-tight">Robot Assembly</p>
-              <p className="text-[#6B6560] text-[10px] uppercase tracking-[0.2em]">Configure 3 parameters to deploy</p>
+              <p className="text-[#1C1C1C] font-serif text-xl sm:text-2xl font-medium tracking-tight">Robot Assembly</p>
+              <p className="text-[#6B6560] font-bold text-[10px] uppercase tracking-[0.2em]">Configure 3 parameters to deploy</p>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-5 sm:space-y-6">
               {/* Body */}
               <div>
-                <p className="text-[10px] uppercase tracking-[0.1em] font-medium text-[#6B6560] mb-3">Core chassis</p>
-                <div className="grid grid-cols-3 gap-3">
+                <p className="text-[10px] uppercase tracking-[0.1em] font-bold text-[#1C1C1C] mb-2 sm:mb-3">Core chassis</p>
+                <div className="grid grid-cols-3 gap-2 sm:gap-3">
                   {BOT_BODIES.map(b => (
                     <button
                       key={b.id}
                       onClick={() => setBody(b.id)}
-                      className={`flex flex-col items-center gap-2 p-4 border transition-all duration-500 ${
-                        body === b.id ? 'border-[#1C1C1C] bg-[#1C1C1C] text-white shadow-md' : 'border-[#E8E4DF] bg-[#FFFFFF] hover:border-[#D4CFC8] text-[#1C1C1C]'
+                      className={`flex flex-col items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 border transition-all duration-300 min-h-[80px] sm:min-h-[100px] ${
+                        body === b.id ? 'border-[#1C1C1C] bg-[#1C1C1C] text-white shadow-md' : 'border-[#D4CFC8] bg-white hover:border-[#1C1C1C] hover:bg-[#F9F8F6] text-[#1C1C1C] shadow-sm'
                       }`}
                     >
-                      <span className={`text-3xl transition-all duration-500 ${body === b.id ? 'scale-110' : 'grayscale opacity-80'}`}>{b.emoji}</span>
-                      <span className={`text-[9px] uppercase tracking-[0.1em] ${body === b.id ? 'text-white' : 'text-[#6B6560]'}`}>{b.label}</span>
+                      <span className={`text-2xl sm:text-3xl transition-all duration-500 ${body === b.id ? 'scale-110' : 'grayscale opacity-90'}`}>{b.emoji}</span>
+                      <span className={`text-[8px] sm:text-[9px] font-bold uppercase tracking-[0.1em] text-center leading-tight ${body === b.id ? 'text-white' : 'text-[#1C1C1C]'}`}>{b.label}</span>
                     </button>
                   ))}
                 </div>
@@ -58,33 +58,33 @@ export default function BuildYourBotParticipant() {
 
               {/* Superpower */}
               <div>
-                <p className="text-[10px] uppercase tracking-[0.1em] font-medium text-[#6B6560] mb-3">Sensory array</p>
+                <p className="text-[10px] uppercase tracking-[0.1em] font-bold text-[#1C1C1C] mb-2 sm:mb-3">Sensory array</p>
                 <div className="grid grid-cols-4 gap-2">
                   {BOT_SUPERPOWERS.map(p => (
                     <button
                       key={p.id}
                       onClick={() => setSuperpower(p.id)}
-                      className={`flex flex-col items-center gap-2 p-3 border transition-all duration-500 ${
-                        superpower === p.id ? 'border-[#1C1C1C] bg-[#1C1C1C] text-white shadow-md' : 'border-[#E8E4DF] bg-[#FFFFFF] hover:border-[#D4CFC8] text-[#1C1C1C]'
+                      className={`flex flex-col items-center justify-center gap-1.5 sm:gap-2 p-2 sm:p-3 border transition-all duration-300 min-h-[70px] sm:min-h-[90px] ${
+                        superpower === p.id ? 'border-[#1C1C1C] bg-[#1C1C1C] text-white shadow-md' : 'border-[#D4CFC8] bg-white hover:border-[#1C1C1C] hover:bg-[#F9F8F6] text-[#1C1C1C] shadow-sm'
                       }`}
                     >
-                      <span className={`text-2xl transition-all duration-500 ${superpower === p.id ? 'scale-110' : 'grayscale opacity-80'}`}>{p.emoji}</span>
-                      <span className={`text-[8px] uppercase tracking-[0.1em] text-center leading-tight ${superpower === p.id ? 'text-white' : 'text-[#6B6560]'}`}>{p.label}</span>
+                      <span className={`text-xl sm:text-2xl transition-all duration-500 ${superpower === p.id ? 'scale-110' : 'grayscale opacity-90'}`}>{p.emoji}</span>
+                      <span className={`text-[7px] sm:text-[8px] font-bold uppercase tracking-[0.1em] text-center leading-tight ${superpower === p.id ? 'text-white' : 'text-[#1C1C1C]'}`}>{p.label}</span>
                     </button>
                   ))}
                 </div>
               </div>
 
               {/* Job */}
-              <div>
-                <p className="text-[10px] uppercase tracking-[0.1em] font-bold text-[#1C1C1C] mb-3">Primary directive</p>
+              <div className="pt-2">
+                <p className="text-[10px] uppercase tracking-[0.1em] font-bold text-[#1C1C1C] mb-2 sm:mb-3">Primary directive</p>
                 <input
                   type="text"
                   maxLength={30}
                   placeholder="e.g. measure machine temp"
                   value={job}
                   onChange={e => setJob(e.target.value)}
-                  className="w-full bg-white border border-[#D4CFC8] px-4 py-3 text-[#1C1C1C] font-medium text-sm focus:outline-none focus:border-[#1C1C1C] focus:ring-1 focus:ring-[#1C1C1C] transition-all placeholder:text-[#A8A29E] placeholder:font-normal shadow-sm"
+                  className="w-full bg-white border border-[#D4CFC8] px-4 py-3 sm:py-4 text-[#1C1C1C] font-medium text-sm sm:text-base focus:outline-none focus:border-[#1C1C1C] focus:ring-1 focus:ring-[#1C1C1C] transition-all placeholder:text-[#A8A29E] placeholder:font-normal shadow-sm rounded-none"
                 />
               </div>
             </div>
@@ -92,7 +92,7 @@ export default function BuildYourBotParticipant() {
             <button
               onClick={submit}
               disabled={!valid}
-              className="w-full py-4 text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 disabled:opacity-50"
+              className="w-full py-4 sm:py-5 text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 disabled:opacity-50 mt-4"
               style={{ background: valid ? '#1C1C1C' : '#D4CFC8', color: valid ? '#FFFFFF' : '#6B6560' }}
             >
               Deploy
@@ -104,17 +104,17 @@ export default function BuildYourBotParticipant() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1.0] }}
-            className="flex flex-col items-center justify-center h-full gap-8 text-center"
+            className="flex flex-col items-center justify-center h-full gap-6 sm:gap-8 text-center"
           >
-            <div className="relative p-6 bg-[#FFFFFF] border border-[#E8E4DF] rounded-sm shadow-sm">
-              <span className="text-7xl grayscale opacity-80">{selectedBody?.emoji}</span>
-              <span className="absolute -bottom-2 -right-2 text-4xl grayscale opacity-90">{selectedPower?.emoji}</span>
+            <div className="relative p-6 sm:p-8 bg-white border border-[#D4CFC8] shadow-sm">
+              <span className="text-6xl sm:text-7xl grayscale opacity-80">{selectedBody?.emoji}</span>
+              <span className="absolute -bottom-2 -right-2 text-3xl sm:text-4xl grayscale opacity-90">{selectedPower?.emoji}</span>
             </div>
-            <div className="space-y-3">
-              <p className="text-[#8B7D56] text-[10px] uppercase tracking-[0.2em]">Deployment successful</p>
-              <p className="text-[#1C1C1C] font-serif text-lg max-w-[200px] leading-snug mx-auto">{job}</p>
+            <div className="space-y-2 sm:space-y-3">
+              <p className="text-[#8B7D56] font-bold text-[10px] uppercase tracking-[0.2em]">Deployment successful</p>
+              <p className="text-[#1C1C1C] font-serif text-lg sm:text-xl font-medium max-w-[240px] leading-snug mx-auto">{job}</p>
             </div>
-            <p className="text-[#8D8881] text-[10px] uppercase tracking-[0.2em]">Joining team roster on screen</p>
+            <p className="text-[#6B6560] font-medium text-[10px] uppercase tracking-[0.2em] mt-2">Joining team roster on screen</p>
           </motion.div>
         )}
       </AnimatePresence>
